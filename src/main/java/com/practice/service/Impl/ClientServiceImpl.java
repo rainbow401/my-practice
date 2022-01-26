@@ -1,7 +1,7 @@
-package com.auth.center.service.Impl;
+package com.practice.service.Impl;
 
-import com.auth.center.entity.Client;
-import com.auth.center.mapper.ClientMapper;
+import com.practice.entity.Client;
+import com.practice.mapper.ClientMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

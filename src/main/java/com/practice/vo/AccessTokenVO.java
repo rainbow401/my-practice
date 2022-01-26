@@ -1,4 +1,4 @@
-package com.auth.center.vo;
+package com.practice.vo;
 
 import lombok.Data;
 

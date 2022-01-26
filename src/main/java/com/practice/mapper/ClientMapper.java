@@ -1,6 +1,6 @@
-package com.auth.center.mapper;
+package com.practice.mapper;
 
-import com.auth.center.entity.Client;
+import com.practice.entity.Client;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.auth.center.entity;
+package com.practice.entity;
 
 import lombok.Data;
 

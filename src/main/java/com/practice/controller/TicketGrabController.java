@@ -1,8 +1,6 @@
-package com.auth.center.controller;
+package com.practice.controller;
 
-import com.auth.center.entity.Client;
-import com.auth.center.mapper.ClientMapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.practice.mapper.ClientMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
