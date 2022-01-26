@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,17 +23,13 @@ import java.util.Set;
 @RestController
 @RequestMapping("/redis")
 @Slf4j
-public class AuthController {
+public class TicketGrabController {
 
     @Autowired
     private ClientMapper clientMapper;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
-
-    public String getAuthorizationCode() {
-        return "";
-    }
 
     @GetMapping("/init")
     public Object initSet() {
@@ -65,21 +60,27 @@ public class AuthController {
         public void run() {
             int startTel = 1000;
             for(int tel = startTel; tel < startTel + 5000; tel++) {
+                //首先将手机号放入抢到的手机号Set里
                 Long success = redisTemplate.boundSetOps("tel").add(tel);
                 log.info("tel:{} success:{}}", tel,success);
-                if(success == 1L) {
+                //如果success 返回 0 则表示手机号已存在
+                if(success == null ||success == 1L) {
                     Object getSuccess = redisTemplate.boundSetOps("ticket").pop();
                     log.info("tel:{} getSuccess:{}}", tel,getSuccess);
+
+                    //如果 getSuccess 为 null 则表示票已抢完
                     if(getSuccess != null) {
                         log.info("{}-抢票成功", tel);
                     } else {
+                        //票已抢完 需要将存放已抢完手机号的Set里的手机号删除
                         Long removeSuccess = redisTemplate.boundSetOps("tel").remove(tel);
-                        if(removeSuccess != 1L) {
+                        if(removeSuccess == null || removeSuccess != 1L) {
                             log.info("{}移除失败 ", tel);
+                            //在另外的地方存储
                         }
                     }
                 } else {
-                    log.info("{}已存在手机号 ", tel);
+                    log.info("{} 已抢到票 ", tel);
                 }
             }
         }
