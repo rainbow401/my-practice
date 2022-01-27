@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -80,7 +82,12 @@ public class TicketGrabController {
             if (getSuccess != null) {
                 log.info("{}-抢票成功", tel);
                 //放到kafka队列中
-                kafkaTemplate.send("ticket", tel);
+                //防止kafka丢消息，做如下记录后还要在kafka配置增加重试次数
+                ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("ticket", tel);
+                future.addCallback(
+                        result -> log.info("生产者成功发送消息到topic:{} partition:{}的消息", result.getRecordMetadata().topic(), result.getRecordMetadata().partition()),
+                        ex -> log.error("生产者发送消失败，原因：{}", ex.getMessage())
+                );
             } else {
                 //票已抢完 需要将存放已抢完手机号的Set里的手机号删除
                 Long removeSuccess = redisTemplate.boundSetOps("tel").remove(tel);
