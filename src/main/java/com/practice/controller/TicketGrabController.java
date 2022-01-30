@@ -31,6 +31,8 @@ public class TicketGrabController {
 
     private List<String> repeatTel = new ArrayList<>();
 
+    private List<Integer> requestCount = new ArrayList<>();
+
     @Autowired
     private ClientMapper clientMapper;
 
@@ -51,6 +53,7 @@ public class TicketGrabController {
         redisTemplate.delete("tel");
         ticketTelMapper.delete(new QueryWrapper<>());
         repeatTel.clear();
+        requestCount.clear();
 
         Set<String> tel = new HashSet<>();
         for (int i = 0; i < 5000; i++) {
@@ -66,7 +69,9 @@ public class TicketGrabController {
 
     @GetMapping("/ticket")
     public Object getTicket(@RequestParam("tel") String tel) {
+
         log.info("======时间： {}", System.currentTimeMillis());
+        requestCount.add(1);
 
         //首先将手机号放入抢到的手机号Set里
         Long success = redisTemplate.boundSetOps("tel").add(tel);
@@ -121,6 +126,8 @@ public class TicketGrabController {
         result.put("repeatTel", repeatTel);
         result.put("repeatTelCount", repeatTel.size());
         result.put("ticketTel", ticketTelMapper.selectList(new QueryWrapper<>()).size());
+        result.put("requestCount", requestCount.size());
+
         return result;
     }
 
