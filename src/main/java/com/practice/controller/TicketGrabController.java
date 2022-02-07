@@ -1,12 +1,10 @@
 package com.practice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.practice.entity.TicketTel;
-import com.practice.mapper.ClientMapper;
-import com.practice.mapper.TicketTelMapper;
+import com.entity.TicketTel;
+import com.mapper.ClientMapper;
+import com.mapper.TicketTelMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;

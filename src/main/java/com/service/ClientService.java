@@ -1,6 +1,6 @@
-package com.practice.service;
+package com.service;
 
-import com.practice.entity.Client;
+import com.entity.Client;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface ClientService extends IService<Client> {

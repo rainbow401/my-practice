@@ -48,6 +48,6 @@
     </logger>
 
     <!--打印sql日志-->
-    <logger name="com.practice.mapper" level="debug"/>
+    <logger name="com.mapper" level="debug"/>
 
 </configuration>
