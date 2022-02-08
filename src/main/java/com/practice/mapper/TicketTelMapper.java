@@ -1,7 +1,7 @@
-package com.mapper;
+package com.practice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.entity.TicketTel;
+import com.practice.entity.TicketTel;
 import org.springframework.stereotype.Repository;
 
 @Repository

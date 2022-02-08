@@ -1,9 +1,10 @@
 package com.practice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.entity.TicketTel;
-import com.mapper.ClientMapper;
-import com.mapper.TicketTelMapper;
+import com.practice.KafkaUtils;
+import com.practice.entity.TicketTel;
+import com.practice.mapper.ClientMapper;
+import com.practice.mapper.TicketTelMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,9 +28,11 @@ import java.util.*;
 public class TicketGrabController {
 
 
-    private List<String> repeatTel = new ArrayList<>();
+    private final List<String> repeatTel = new ArrayList<>();
 
-    private List<Integer> requestCount = new ArrayList<>();
+    private final List<Integer> requestCount = new ArrayList<>();
+
+    private final List<Integer> kafkaSendCount = new ArrayList<>();
 
     @Autowired
     private ClientMapper clientMapper;
@@ -66,9 +69,9 @@ public class TicketGrabController {
     }
 
     @GetMapping("/ticket")
-    public Object getTicket(@RequestParam("tel") String tel) {
+    public void getTicket(@RequestParam("tel") String tel) {
 
-        log.info("======时间： {}", System.currentTimeMillis());
+        log.info("当前时间： {}", System.currentTimeMillis());
         requestCount.add(1);
 
         //首先将手机号放入抢到的手机号Set里
@@ -88,8 +91,11 @@ public class TicketGrabController {
                 //防止kafka丢消息，做如下记录后还要在kafka配置增加重试次数
                 ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("ticket", tel);
                 future.addCallback(
-                        result -> log.info("生产者成功发送消息到topic:{} partition:{}的消息", result.getRecordMetadata().topic(), result.getRecordMetadata().partition()),
-                        ex -> log.error("生产者发送消失败，原因：{}", ex.getMessage())
+                        result -> {
+                            this.kafkaSendCount.add(1);
+                            KafkaUtils.sendSuccessCallBack(result);
+                        },
+                        KafkaUtils::sendFailedCallBack
                 );
             } else {
                 //票已抢完 需要将存放已抢完手机号的Set里的手机号删除
@@ -103,8 +109,10 @@ public class TicketGrabController {
             repeatTel.add(tel);
             log.info("{} 已抢到票 ", tel);
         }
-        return "";
     }
+
+
+
 
     @KafkaListener(topics = {"ticket"})
     public void consumer(String tel) {
@@ -118,14 +126,14 @@ public class TicketGrabController {
     @GetMapping("/ticket/count")
     public Object checkTicket() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("tel", redisTemplate.boundSetOps("tel").members());
-        result.put("telCount", redisTemplate.boundSetOps("tel").members().size());
-        result.put("ticketCount", redisTemplate.boundSetOps("ticket").members().size());
-        result.put("repeatTel", repeatTel);
-        result.put("repeatTelCount", repeatTel.size());
-        result.put("ticketTel", ticketTelMapper.selectList(new QueryWrapper<>()).size());
-        result.put("requestCount", requestCount.size());
-
+        result.put("redis grab success tel", redisTemplate.boundSetOps("tel").members());
+        result.put("redis grab success tel count", redisTemplate.boundSetOps("tel").members().size());
+        result.put("redis remain ticket count", redisTemplate.boundSetOps("ticket").members().size());
+        result.put("mysql grab success tel count", ticketTelMapper.selectList(new QueryWrapper<>()).size());
+        result.put("all request count", requestCount.size());
+        result.put("repeat request tel", repeatTel);
+        result.put("repeat request tel count", repeatTel.size());
+        result.put("kafka send count", kafkaSendCount.size());
         return result;
     }
 

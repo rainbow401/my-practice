@@ -1,7 +1,7 @@
-package com.service.Impl;
+package com.practice.service.Impl;
 
-import com.entity.Client;
-import com.mapper.ClientMapper;
+import com.practice.entity.Client;
+import com.practice.mapper.ClientMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
