@@ -141,11 +141,12 @@ public class GrabTicketController {
     public Map<String, Object> countResult() {
 
         Map<String, Object> result = new TreeMap<>();
+        List<TicketTel> list = ticketTelMapper.selectList(new QueryWrapper<>());
 
         result.put("redis tel count", redisTel.members().size());
         result.put("redis remain ticket count", redisTicket.get());
 
-        result.put("mysql grab success tel count", ticketTelMapper.selectList(new QueryWrapper<>()).size());
+        result.put("mysql grab success tel count", list.size());
 
         result.put("kafka send count", kafkaSendCount);
         result.put("kafka consumer count", kafkaConsumerCount);
@@ -155,6 +156,7 @@ public class GrabTicketController {
 
         log.info("repeat request tel {}", repeatTel);
         log.info("redis tel {}", redisTel.members());
+        log.info("mysql tel {}", list);
 
         return result;
     }
