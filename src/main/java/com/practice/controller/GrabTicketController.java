@@ -94,7 +94,7 @@ public class GrabTicketController {
         //如果success 返回 0 则表示手机号已存在
         if (success == null || success == 1L) {
             Long ticketCount = redisTicket.decrement();
-            log.info("tel:{} ticketCount:{}}", tel, ticketCount);
+            log.info("tel:{} ticketCount:{}", tel, ticketCount);
             //判断票是否已经抢完
             if (ticketCount != null && ticketCount >= 0L) {
                 log.info("{}-抢票成功", tel);
@@ -110,11 +110,12 @@ public class GrabTicketController {
                 );
             } else {
                 //票已抢完 需要将存放已抢完手机号的Set里的手机号删除
-                Long removeSuccess = redisTel.remove(tel);
-                if (removeSuccess == null || removeSuccess != 1L) {
-                    log.info("{}移除失败 ", tel);
-                    //TODO 在另外的地方存储
-                }
+//                Long removeSuccess = redisTel.remove(tel);
+//                if (removeSuccess == null || removeSuccess != 1L) {
+//                    log.info("{}移除失败 ", tel);
+//                    //TODO 在另外的地方存储
+//                }
+                log.info("tel-{} 票已抢完", tel);
             }
         } else {
             repeatTel.add(tel);
