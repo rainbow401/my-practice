@@ -141,6 +141,9 @@ public class GrabTicketController {
 
     public Map<String, Object> countResult() {
 
+        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTel = redisTemplate.boundSetOps("tel");
+
         Map<String, Object> result = new TreeMap<>();
         List<TicketTel> list = ticketTelMapper.selectList(new QueryWrapper<>());
 
@@ -155,9 +158,9 @@ public class GrabTicketController {
         result.put("request repeat tel count", repeatTel.size());
         result.put("request all count", requestCount);
 
-        log.info("repeat request tel {}", repeatTel);
-        log.info("redis tel {}", redisTel.members());
-        log.info("mysql tel {}", list);
+//        log.info("repeat request tel {}", repeatTel);
+//        log.info("redis tel {}", redisTel.members());
+//        log.info("mysql tel {}", list);
 
         return result;
     }
