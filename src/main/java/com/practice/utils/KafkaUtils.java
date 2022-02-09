@@ -1,4 +1,4 @@
-package com.practice;
+package com.practice.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.support.SendResult;
@@ -21,6 +21,7 @@ public class KafkaUtils {
     }
 
     public static void sendFailedCallBack(Throwable ex) {
+        //TODO 做持久化处理
         log.error("生产者发送消失败，原因：{}", ex.getMessage());
     }
 }

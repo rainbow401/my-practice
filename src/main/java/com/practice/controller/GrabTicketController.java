@@ -1,12 +1,14 @@
 package com.practice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.practice.KafkaUtils;
+import com.practice.utils.KafkaUtils;
 import com.practice.entity.TicketTel;
 import com.practice.mapper.ClientMapper;
 import com.practice.mapper.TicketTelMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundSetOperations;
+import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,7 +16,6 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -25,14 +26,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/redis")
 @Slf4j
-public class TicketGrabController {
-
-
-    private final List<String> repeatTel = new ArrayList<>();
-
-    private final List<Integer> requestCount = new ArrayList<>();
-
-    private final List<Integer> kafkaSendCount = new ArrayList<>();
+public class GrabTicketController {
 
     @Autowired
     private ClientMapper clientMapper;
@@ -40,66 +34,83 @@ public class TicketGrabController {
     @Autowired
     private TicketTelMapper ticketTelMapper;
 
-    @Resource
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
+    //余票
+    private BoundValueOperations<String, Object> redisTicket;
+
+    //抢到票的手机号Set
+    private BoundSetOperations<String, Object> redisTel;
+
+    //重复抢票的手机号
+    private final List<String> repeatTel = new ArrayList<>();
+
+    //总计请求数量
+    private Integer requestCount = 0;
+
+    //kafka发送数量
+    private Integer kafkaSendCount = 0;
+
+    //kafka消费数量
+    private Integer kafkaConsumerCount = 0;
+
     @GetMapping("/init")
     public Object initSet() {
+        //绑定redis键值
+        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTel = redisTemplate.boundSetOps("tel");
 
-        Long start = System.currentTimeMillis();
         redisTemplate.delete("ticket");
         redisTemplate.delete("tel");
         ticketTelMapper.delete(new QueryWrapper<>());
         repeatTel.clear();
-        requestCount.clear();
+        requestCount = 0;
+        kafkaSendCount = 0;
+        kafkaConsumerCount = 0;
 
-        Set<String> tel = new HashSet<>();
-        for (int i = 0; i < 5000; i++) {
-            Long result = redisTemplate.boundSetOps("ticket").add(i);
-            log.info("add i: {}, redisTemplate result: {}", i, result);
-        }
+        redisTicket.set(5000);
 
-        Long end = System.currentTimeMillis();
-        log.info("耗时：{}", end - start);
-
-        return redisTemplate.boundSetOps("ticket").members();
+        //检查数据是否正常
+        return this.countResult();
     }
 
     @GetMapping("/ticket")
     public void getTicket(@RequestParam("tel") String tel) {
 
         log.info("当前时间： {}", System.currentTimeMillis());
-        requestCount.add(1);
+        requestCount++;
+
+        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTel = redisTemplate.boundSetOps("tel");
 
         //首先将手机号放入抢到的手机号Set里
-        Long success = redisTemplate.boundSetOps("tel").add(tel);
+        Long success = redisTel.add(tel);
         log.info("tel:{} success:{}}", tel, success);
 
         //如果success 返回 0 则表示手机号已存在
         if (success == null || success == 1L) {
-
-            Object getSuccess = redisTemplate.boundSetOps("ticket").pop();
-            log.info("tel:{} getSuccess:{}}", tel, getSuccess);
-
-            //如果 getSuccess 为 null 则表示票已抢完
-            if (getSuccess != null) {
+            Long ticketCount = redisTicket.decrement();
+            log.info("tel:{} ticketCount:{}}", tel, ticketCount);
+            //判断票是否已经抢完
+            if (ticketCount != null && ticketCount >= 0L) {
                 log.info("{}-抢票成功", tel);
                 //放到kafka队列中
                 //防止kafka丢消息，做如下记录后还要在kafka配置增加重试次数
-                ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("ticket", tel);
+                ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send("tel", tel);
                 future.addCallback(
                         result -> {
-                            this.kafkaSendCount.add(1);
+                            this.kafkaSendCount++;
                             KafkaUtils.sendSuccessCallBack(result);
                         },
                         KafkaUtils::sendFailedCallBack
                 );
             } else {
                 //票已抢完 需要将存放已抢完手机号的Set里的手机号删除
-                Long removeSuccess = redisTemplate.boundSetOps("tel").remove(tel);
+                Long removeSuccess = redisTel.remove(tel);
                 if (removeSuccess == null || removeSuccess != 1L) {
                     log.info("{}移除失败 ", tel);
                     //TODO 在另外的地方存储
@@ -111,30 +122,40 @@ public class TicketGrabController {
         }
     }
 
-
-
-
-    @KafkaListener(topics = {"ticket"})
+    @KafkaListener(topics = {"tel"})
     public void consumer(String tel) {
         log.info("消费：{} ", tel);
         TicketTel ticketTel = new TicketTel();
         ticketTel.setTel(tel);
         ticketTel.setStatus(1);
         ticketTelMapper.insert(ticketTel);
+        kafkaConsumerCount++;
     }
 
     @GetMapping("/ticket/count")
     public Object checkTicket() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("redis grab success tel", redisTemplate.boundSetOps("tel").members());
-        result.put("redis grab success tel count", redisTemplate.boundSetOps("tel").members().size());
-        result.put("redis remain ticket count", redisTemplate.boundSetOps("ticket").members().size());
-        result.put("mysql grab success tel count", ticketTelMapper.selectList(new QueryWrapper<>()).size());
-        result.put("all request count", requestCount.size());
-        result.put("repeat request tel", repeatTel);
-        result.put("repeat request tel count", repeatTel.size());
-        result.put("kafka send count", kafkaSendCount.size());
-        return result;
+        return this.countResult();
     }
 
+
+    public Map<String, Object> countResult() {
+
+        Map<String, Object> result = new TreeMap<>();
+
+        result.put("redis tel count", redisTel.members().size());
+        result.put("redis remain ticket count", redisTicket.get());
+
+        result.put("mysql grab success tel count", ticketTelMapper.selectList(new QueryWrapper<>()).size());
+
+        result.put("kafka send count", kafkaSendCount);
+        result.put("kafka consumer count", kafkaConsumerCount);
+
+        result.put("request repeat tel count", repeatTel.size());
+        result.put("request all count", requestCount);
+
+        log.info("repeat request tel {}", repeatTel);
+        log.info("redis tel {}", redisTel.members());
+
+        return result;
+    }
 }
