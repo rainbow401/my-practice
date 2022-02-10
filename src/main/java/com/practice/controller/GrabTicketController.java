@@ -41,7 +41,7 @@ public class GrabTicketController {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     //余票
-    private BoundValueOperations<String, Object> redisTicket;
+    private BoundSetOperations<String, Object> redisTicket;
 
     //抢到票的手机号Set
     private BoundSetOperations<String, Object> redisTel;
@@ -61,7 +61,7 @@ public class GrabTicketController {
     @GetMapping("/init")
     public Object initSet() {
         //绑定redis键值
-        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTicket = redisTemplate.boundSetOps("ticket");
         redisTel = redisTemplate.boundSetOps("tel");
 
         redisTemplate.delete("ticket");
@@ -72,7 +72,9 @@ public class GrabTicketController {
         kafkaSendCount = 0;
         kafkaConsumerCount = 0;
 
-        redisTicket.set(5000);
+        for(int i = 0; i < 5000; i++) {
+            redisTicket.add(i);
+        }
 
         //检查数据是否正常
         return this.countResult();
@@ -84,7 +86,7 @@ public class GrabTicketController {
         log.info("当前时间： {}", System.currentTimeMillis());
         requestCount++;
 
-        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTicket = redisTemplate.boundSetOps("ticket");
         redisTel = redisTemplate.boundSetOps("tel");
 
         //首先将手机号放入抢到的手机号Set里
@@ -93,10 +95,10 @@ public class GrabTicketController {
 
         //如果success 返回 0 则表示手机号已存在
         if (success == null || success == 1L) {
-            Long ticketCount = redisTicket.decrement();
+            Object ticketCount = redisTicket.pop();
             log.info("tel:{} ticketCount:{}", tel, ticketCount);
             //判断票是否已经抢完
-            if (ticketCount != null && ticketCount >= 0L) {
+            if (ticketCount != null) {
                 log.info("{}-抢票成功", tel);
                 //放到kafka队列中
                 //防止kafka丢消息，做如下记录后还要在kafka配置增加重试次数
@@ -141,16 +143,16 @@ public class GrabTicketController {
 
     public Map<String, Object> countResult() {
 
-        redisTicket = redisTemplate.boundValueOps("ticket");
+        redisTicket = redisTemplate.boundSetOps("ticket");
         redisTel = redisTemplate.boundSetOps("tel");
 
         Map<String, Object> result = new TreeMap<>();
-        List<TicketTel> list = ticketTelMapper.selectList(new QueryWrapper<>());
+        Long count = ticketTelMapper.selectCount(new QueryWrapper<>());
 
         result.put("redis tel count", redisTel.members().size());
-        result.put("redis remain ticket count", redisTicket.get());
+        result.put("redis remain ticket count", redisTicket.members().size());
 
-        result.put("mysql grab success tel count", list.size());
+        result.put("mysql grab success tel count", count);
 
         result.put("kafka send count", kafkaSendCount);
         result.put("kafka consumer count", kafkaConsumerCount);
