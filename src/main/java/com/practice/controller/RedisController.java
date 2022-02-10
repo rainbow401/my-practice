@@ -17,9 +17,9 @@ import java.util.*;
 @Slf4j
 public class RedisController {
 
-    private List<Long> decrementStatics = new ArrayList<>();
+    private final List<Long> decrementStatics = new ArrayList<>();
 
-    private List<Long> popStatics = new ArrayList<>();
+    private final List<Long> popStatics = new ArrayList<>();
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -64,23 +64,23 @@ public class RedisController {
     @RequestMapping("/check")
     public Object check() {
         Map<String, Object> result = new TreeMap<>();
-        result.put("set", redisTemplate.opsForSet().members("set").size());
+        result.put("set", Objects.requireNonNull(redisTemplate.opsForSet().members("set")).size());
         result.put("value", redisTemplate.opsForValue().get("value"));
         result.put("setCount", popStatics.size());
         result.put("valueCount", decrementStatics.size());
 
-        Long allPopTime = 0L;
-        Long allDecrementTime = 0L;
-        for(int i = 0; i < popStatics.size(); i++) {
-            allPopTime = allPopTime + popStatics.get(i);
+        long allPopTime = 0L;
+        long allDecrementTime = 0L;
+        for (Long popStatic : popStatics) {
+            allPopTime = allPopTime + popStatic;
         }
 
-        for(int i = 0; i < decrementStatics.size(); i++) {
-            allDecrementTime = allDecrementTime + decrementStatics.get(i);
+        for (Long decrementStatic : decrementStatics) {
+            allDecrementTime = allDecrementTime + decrementStatic;
         }
 
-        Object o = allPopTime == 0L ? 1==1 : result.put("avgSetTime", allDecrementTime / decrementStatics.size());
-        Object o1 = allPopTime == 0L ? 1==1 : result.put("avgPopTime", allPopTime / popStatics.size());
+        Object o = allPopTime == 0L ? true : result.put("avgSetTime", allDecrementTime / decrementStatics.size());
+        Object o1 = allPopTime == 0L ? true : result.put("avgPopTime", allPopTime / popStatics.size());
 
         return result;
     }

@@ -149,8 +149,8 @@ public class GrabTicketController {
         Map<String, Object> result = new TreeMap<>();
         Long count = ticketTelMapper.selectCount(new QueryWrapper<>());
 
-        result.put("redis tel count", redisTel.members().size());
-        result.put("redis remain ticket count", redisTicket.members().size());
+        result.put("redis tel count", Objects.requireNonNull(redisTel.members()).size());
+        result.put("redis remain ticket count", Objects.requireNonNull(redisTicket.members()).size());
 
         result.put("mysql grab success tel count", count);
 
