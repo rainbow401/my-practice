@@ -71,6 +71,7 @@ public class RedisController {
 
         long allPopTime = 0L;
         long allDecrementTime = 0L;
+
         for (Long popStatic : popStatics) {
             allPopTime = allPopTime + popStatic;
         }
@@ -79,7 +80,7 @@ public class RedisController {
             allDecrementTime = allDecrementTime + decrementStatic;
         }
 
-        Object o = allPopTime == 0L ? true : result.put("avgSetTime", allDecrementTime / decrementStatics.size());
+        Object o = allDecrementTime == 0L ? true : result.put("avgSetTime", allDecrementTime / decrementStatics.size());
         Object o1 = allPopTime == 0L ? true : result.put("avgPopTime", allPopTime / popStatics.size());
 
         return result;

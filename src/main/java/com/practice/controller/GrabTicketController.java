@@ -94,7 +94,7 @@ public class GrabTicketController {
         log.info("tel:{} success:{}}", tel, success);
 
         //如果success 返回 0 则表示手机号已存在
-        if (success == null || success == 1L) {
+        if (success != null && success == 1L) {
             Object ticketCount = redisTicket.pop();
             log.info("tel:{} ticketCount:{}", tel, ticketCount);
             //判断票是否已经抢完
