@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 @ServerEndpoint("/ws/{userId}")
 @Component
-public class Socket {
+public class SocketController {
 
     private final String SOCKET_SESSION_PREFIX = "user-";
 
