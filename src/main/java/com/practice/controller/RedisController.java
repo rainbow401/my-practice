@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 /**
+ * 测试 pop 和 decrement 速度
+ * 结果：pop速度快多了
  * @Author: yanzhihao
  * @Date 2022/2/10 8:50 上午
  */
