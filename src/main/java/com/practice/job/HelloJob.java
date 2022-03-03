@@ -18,7 +18,6 @@ public class HelloJob implements Job {
         Object tv2 = context.getTrigger().getJobDataMap().get("t2");
         Object jv1 = context.getJobDetail().getJobDataMap().get("jd1");
         Object jv2 = context.getJobDetail().getJobDataMap().get("jd2");
-        Object sh = context.getScheduler().getContext().get("skey");
         Object sv = null;
         try {
             sv = context.getScheduler().getContext().get("skey");
