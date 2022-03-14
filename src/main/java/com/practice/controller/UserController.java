@@ -7,6 +7,8 @@ import com.practice.entity.User;
 import com.practice.mapper.UserMapper;
 import com.practice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,23 +28,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)
     public Object insertUser() throws Exception {
-        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
-//        updateWrapper.set(User::getDeleted, 1);
-
-        User user = new User();
-        user.setDeleted(1);
-//        userMapper.update(user, updateWrapper);
-        User user2 = new User();
-        user2.setDeleted(1);
-
-//        List<User> users = new ArrayList<>();
-//        users.add(user);
-//        users.add(user2);
-//        userService.updateBatchById(users);
-        userMapper.update(user, updateWrapper);
-        return null;
+        return jdbcTemplate.query("select * from user", new BeanPropertyRowMapper<>(User.class));
     }
 }
