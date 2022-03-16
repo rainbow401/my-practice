@@ -1,4 +1,4 @@
-package com.practice.service.Impl;
+package com.practice.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.practice.entity.User;

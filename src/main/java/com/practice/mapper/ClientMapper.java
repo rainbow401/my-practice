@@ -1,9 +1,10 @@
 package com.practice.mapper;
 
-import com.practice.entity.Client;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-@Repository
-public interface ClientMapper extends BaseMapper<Client> {
+@Mapper
+public interface ClientMapper {
+
 }
