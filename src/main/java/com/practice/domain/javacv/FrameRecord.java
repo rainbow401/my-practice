@@ -1,9 +1,6 @@
-package com.practice.controller.javacv;
+package com.practice.domain.javacv;
  
 import lombok.extern.slf4j.Slf4j;
-import org.bytedeco.ffmpeg.avformat.AVFormatContext;
-import org.bytedeco.ffmpeg.global.avcodec;
-import org.bytedeco.ffmpeg.global.avformat;
 import org.bytedeco.javacv.*;
  
 /**

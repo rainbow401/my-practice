@@ -1,4 +1,4 @@
-package com.practice.controller.ticket;
+package com.practice.domain.ticket;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.practice.entity.TicketTel;

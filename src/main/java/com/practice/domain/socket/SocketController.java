@@ -1,9 +1,5 @@
-package com.practice.controller;
+package com.practice.domain.socket;
 
-import com.fasterxml.jackson.databind.JsonSerializable;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
