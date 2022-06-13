@@ -1,6 +1,6 @@
-package com.practice.controller;
+package com.practice.controller.QuartzController;
 
-import com.practice.job.HelloJob;
+import com.practice.controller.QuartzController.job.HelloJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;

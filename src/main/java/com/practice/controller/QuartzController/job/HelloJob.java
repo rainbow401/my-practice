@@ -1,4 +1,4 @@
-package com.practice.job;
+package com.practice.controller.QuartzController.job;
 
 import lombok.SneakyThrows;
 import org.quartz.Job;
