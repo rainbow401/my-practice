@@ -124,7 +124,7 @@ public class GrabTicketController {
         }
     }
 
-    @KafkaListener(topics = {"tel"})
+//    @KafkaListener(topics = {"tel"})
     public void consumer(String tel) {
         log.info("消费：{} ", tel);
         TicketTel ticketTel = new TicketTel();

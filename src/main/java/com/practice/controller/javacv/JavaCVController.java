@@ -14,10 +14,11 @@ public class JavaCVController {
 
     @GetMapping("/convert")
     public void convertVideo(String videoStream, String outputPath) throws IOException {
-
+        System.out.println(videoStream);
+        System.out.println(outputPath);
         try {
             FrameRecord frame = new FrameRecord();
-            frame.frameRecord(videoStream, outputPath, 1);
+            frame.frameRecord(videoStream, outputPath, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

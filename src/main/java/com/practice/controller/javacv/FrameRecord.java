@@ -1,6 +1,9 @@
 package com.practice.controller.javacv;
  
+import lombok.extern.slf4j.Slf4j;
+import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.global.avcodec;
+import org.bytedeco.ffmpeg.global.avformat;
 import org.bytedeco.javacv.*;
  
 /**
@@ -8,6 +11,7 @@ import org.bytedeco.javacv.*;
  * @description：javaCV开发详解之3：收流器实现，录制流媒体服务器的rtsp/rtmp视频文件(基于javaCV-FFMPEG)
  * @date ：created at 2020/07/07 10:57
  */
+@Slf4j
 public class FrameRecord {
 //    public static void main(String[] args)
 //            throws FrameRecorder.Exception, FrameGrabber.Exception, InterruptedException {
@@ -39,28 +43,35 @@ public class FrameRecord {
      */
     public void frameRecord(String inputFile, String outputFile, int audioChannel)
             throws Exception, org.bytedeco.javacv.FrameRecorder.Exception {
+        FFmpegLogCallback.set();
  
         boolean isStart = true;//该变量建议设置为全局控制变量，用于控制录制结束
         // 获取视频源
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputFile);
         // 获取流设置帧率参数
-        grabber.setOption("rtsp_transport", "tcp");
+//        grabber.setOption("rtsp_transport", "tcp");
+//        grabber.setOption("rtmp_transport", "tcp");
+//        grabber.setTimeout(300);
+//        grabber.setOption("stimeout", "2000000");
+//        // 设置读取的最大数据，单位字节
+//        grabber.setOption("probesize", "10000");
+//        // 设置分析的最长时间，单位微秒
+//        grabber.setOption("analyzeduration", "10000");
 
-        grabber.setOption("stimeout", "2000000");
-        // 设置读取的最大数据，单位字节
-        grabber.setOption("probesize", "10000");
-        // 设置分析的最长时间，单位微秒
-        grabber.setOption("analyzeduration", "10000");
+//        grabber.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+//        grabber.setFrameRate(30);
+//        grabber.setVideoBitrate(3000000);
+//        grabber.setFormat("mp4");
 
-        grabber.setFrameRate(30);
-        grabber.setVideoBitrate(3000000);
+
  
         // 流媒体输出地址，分辨率（长，高），是否录制音频（0:不录制/1:录制）
         FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(outputFile, 1280, 720, audioChannel);
         // 输出流设置帧率参数
-        recorder.setFrameRate(30);
-        recorder.setVideoBitrate(3000000);
-        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+//        recorder.setFrameRate(30);
+//        recorder.setVideoBitrate(3000000);
+//        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+//        recorder.setFormat("mp4");
         recorder.start();
         // 停止取视频源
 //        stopRecordByFrame(isStart);
@@ -80,18 +91,18 @@ public class FrameRecord {
         try {
             // 用来标记控制
             int i = -2999;
- 
+
             //建议在线程中使用该方法
             grabber.start();
-            recorder.start();
+//            recorder.start();
             Frame frame = null;
             while (status && (frame = grabber.grabFrame()) != null) {
                 recorder.record(frame);
-                System.out.println(i++);
-//                // 停止录制,此处方式过于简陋；读者可自行修改，比如线程控制之类的
-//                if (i++ > 2999) {
-//                    status = false;
-//                }
+//                System.out.println(i++);
+                // 停止录制,此处方式过于简陋；读者可自行修改，比如线程控制之类的
+                if (i++ > 2999) {
+                    status = false;
+                }
  
             }
             recorder.stop();

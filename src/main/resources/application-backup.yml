@@ -4,12 +4,12 @@ server:
 spring:
   application:
     name: yanzhihao-practice
-  cloud:
-    discovery:
-      register: true
-    loadbalancer:
-      ribbon:
-        enabled: false
+#  cloud:
+#    discovery:
+#      register: true
+#    loadbalancer:
+#      ribbon:
+#        enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/practice?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
