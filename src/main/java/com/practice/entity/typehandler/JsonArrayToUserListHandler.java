@@ -1,5 +1,6 @@
 package com.practice.entity.typehandler;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson2.JSON;
 import com.practice.entity.TestData;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -13,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@MappedTypes(List.class)
+@MappedJdbcTypes(JdbcType.VARCHAR)
 public class JsonArrayToUserListHandler extends BaseTypeHandler<List<TestData>> {
 
     // 执行插入数据方法 且 实体属性不为空时
