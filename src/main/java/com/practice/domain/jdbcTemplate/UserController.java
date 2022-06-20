@@ -1,4 +1,4 @@
-package com.practice.domain;
+package com.practice.domain.jdbcTemplate;
 
 import com.practice.entity.User;
 import com.practice.mapper.UserMapper;
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
