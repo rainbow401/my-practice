@@ -108,7 +108,7 @@ public class TestController {
         stopWatch.start();
         int rowCount = mybatisBatchUtils.batchUpdateOrInsert(tests, TestMapper.class, (item, testMapper) -> testMapper.insert(item));
         stopWatch.stop();
-        System.out.println(stopWatch.getLastTaskInfo().getTaskName());
+        System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
 
         return rowCount;
@@ -138,7 +138,7 @@ public class TestController {
         stopWatch.start();
         boolean result = testService.saveBatch(tests, 500);
         stopWatch.stop();
-        System.out.println(stopWatch.getLastTaskInfo().getTaskName());
+        System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
 
         return result;
@@ -171,7 +171,7 @@ public class TestController {
             result = result + testMapper.insert(tests.get(i));
         }
         stopWatch.stop();
-        System.out.println(stopWatch.getLastTaskInfo().getTaskName());
+        System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
 
         return result;
