@@ -32,7 +32,7 @@ public class TestController {
         for (int i = 0; i < 5; i++) {
             TestData temp = new TestData();
             temp.setId(i);
-            temp.setData("test" + i);
+            temp.setName("test" + i);
             dataList.add(temp);
         }
 
