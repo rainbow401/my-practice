@@ -18,12 +18,12 @@ import java.util.Arrays;
 public class PracticeApplication {
 
     public static void main(String[] args) {
-        System.out.println("--------------------------");
-        for (String e : args) {
-            System.out.println("args: " + e);
-        }
-        System.out.println("--------------------------");
-        args = new String[] {"--server.port=19092"};
+//        System.out.println("--------------------------");
+//        for (String e : args) {
+//            System.out.println("args: " + e);
+//        }
+//        System.out.println("--------------------------");
+//        args = new String[] {"--server.port=19092"};
         SpringApplication.run(PracticeApplication.class, args);
     }
 

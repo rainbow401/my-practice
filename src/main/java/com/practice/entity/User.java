@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @KeySequence("PS")
 public class User {
 
-    @TableId(type = IdType.INPUT)
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
     @TableField("loginName")
     private String LoginName;
