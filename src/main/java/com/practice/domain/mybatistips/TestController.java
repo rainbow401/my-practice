@@ -1,4 +1,4 @@
-package com.practice.domain.mybatistest;
+package com.practice.domain.mybatistips;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.practice.entity.Test;
