@@ -15,4 +15,7 @@
     <select id="getList" resultMap="BaseResultMap">
         select * from test
     </select>
+    <select id="getIdMapKey" resultMap="BaseResultMap">
+        select * from test
+    </select>
 </mapper>

@@ -2,9 +2,11 @@ package com.practice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.practice.entity.Test;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author lenovo
@@ -17,4 +19,7 @@ public interface TestMapper extends BaseMapper<Test> {
 
 
     List<Test> getList();
+
+    @MapKey("id")
+    Map<Long, Test> getIdMapKey();
 }

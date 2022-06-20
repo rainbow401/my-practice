@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/mybatis/typeHandler")
+@RequestMapping("/mybatis/test")
 public class TestController {
 
     @Resource
@@ -58,5 +59,10 @@ public class TestController {
     @GetMapping("/list3")
     public List<Test> list3() {
         return testMapper.getList();
+    }
+
+    @GetMapping("/mapKey")
+    public Map<Long, Test> getIdMapKey() {
+        return testMapper.getIdMapKey();
     }
 }
