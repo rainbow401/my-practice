@@ -15,7 +15,7 @@ import java.util.List;
  * @TableName test
  */
 @Data
-@TableName(value = "test", autoResultMap = true)
+@TableName(autoResultMap = true)
 public class Test implements Serializable {
     /**
      * 
@@ -26,7 +26,7 @@ public class Test implements Serializable {
     /**
      * 
      */
-    @TableField(value = "data", typeHandler = JsonArrayToUserListHandler.class)
+    @TableField(typeHandler = JsonArrayToUserListHandler.class)
     private List<TestData> data;
 
     private static final long serialVersionUID = 1L;
