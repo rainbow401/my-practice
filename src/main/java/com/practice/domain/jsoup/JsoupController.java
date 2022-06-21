@@ -17,7 +17,7 @@ public class JsoupController {
     /**
      * 从url下载文件
      */
-    public void downloadPdf(Integer id1,Integer id2, String urlTemp,String head, Integer index, Integer count) throws IOException, InterruptedException {
+    public void downloadPdf(Integer id1, Integer id2, String urlTemp,String head, Integer index, Integer count) throws IOException, InterruptedException {
         List<String> result = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
