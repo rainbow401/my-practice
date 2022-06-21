@@ -5,32 +5,22 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.practice.entity.typehandler.JsonArrayToUserListHandler;
-import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
-/**
- * 
- * @TableName test
- */
-@Data
-@TableName(autoResultMap = true)
-public class Test implements Serializable {
+@TableName("test")
+public class Test2 {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 
+     *
      */
     @TableField(typeHandler = JsonArrayToUserListHandler.class)
     private List<TestData> data;
-
-    private Date time;
 
     private static final long serialVersionUID = 1L;
 }

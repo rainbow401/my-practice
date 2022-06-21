@@ -1,5 +1,6 @@
 package com.practice.domain.mybatis;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.practice.entity.Test;
 import com.practice.entity.TestData;
@@ -11,6 +12,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +120,7 @@ public class TestController {
      * 测试批处理
      */
     @Transactional(rollbackFor = Exception.class)
-    @PostMapping("/batchInsert2")
+    @PostMapping("/batchInsert/saveBatch")
     public boolean batch2(@RequestParam Integer count) throws Exception {
         List<TestData> dataList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -136,10 +138,11 @@ public class TestController {
         }
         StopWatch stopWatch = new StopWatch("2");
         stopWatch.start();
-        boolean result = testService.saveBatch(tests, 500);
+        boolean result = testService.saveBatch(tests, 1000);
         stopWatch.stop();
         System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
+        System.out.println(count);
 
         return result;
     }
@@ -148,7 +151,7 @@ public class TestController {
      * 测试批处理
      */
     @Transactional(rollbackFor = Exception.class)
-    @PostMapping("/batchInsert3")
+    @PostMapping("/batchInsert/insert")
     public int batch3(@RequestParam Integer count) throws Exception {
         List<TestData> dataList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -168,12 +171,13 @@ public class TestController {
         stopWatch.start();
         int result = 0;
         for (int i = 0; i < tests.size(); i++) {
-            result = result + testMapper.insert(tests.get(i));
+            testMapper.insert(tests.get(i));
         }
         stopWatch.stop();
         System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
 
+        System.out.println(count);
         return result;
     }
 }
