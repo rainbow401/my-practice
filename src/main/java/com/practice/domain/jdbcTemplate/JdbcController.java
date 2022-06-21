@@ -37,6 +37,7 @@ public class JdbcController {
                 totalCount++;
             }
         }
+        connection.close();
         stopWatch.stop();
         System.out.println(stopWatch.getId());
         System.out.println(stopWatch.getLastTaskInfo().getTimeSeconds());
