@@ -1,9 +1,7 @@
 package com.practice.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.practice.entity.typehandler.JsonArrayToListTypeHandler;
 import com.practice.entity.typehandler.JsonArrayToUserListHandler;
 import lombok.Data;
 
@@ -27,10 +25,13 @@ public class Test implements Serializable {
     /**
      * 
      */
-    @TableField(typeHandler = JsonArrayToUserListHandler.class)
+    @TableField(value = "data", typeHandler = JsonArrayToUserListHandler.class)
     private List<TestData> data;
 
     private Date time;
+
+    @TableLogic
+    private Integer deleted;
 
     private static final long serialVersionUID = 1L;
 }

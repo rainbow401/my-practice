@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.practice.entity.Test">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="data" column="data" typeHandler="com.practice.entity.typehandler.JsonArrayToUserListHandler"/>
+            <result property="data" column="data" typeHandler="com.practice.entity.typehandler.JsonArrayToListTypeHandler"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -1,7 +1,8 @@
 package com.practice.domain.mybatis;
 
-import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.practice.entity.Test;
 import com.practice.entity.TestData;
 import com.practice.mapper.TestMapper;
@@ -12,7 +13,6 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -179,5 +179,33 @@ public class TestController {
 
         System.out.println(count);
         return result;
+    }
+
+    @GetMapping("/tableLogic/{id}")
+    public void testTableLogic(@PathVariable("id") Long id) {
+//        Test test = new Test();
+//        test.setId(id);
+//        test.setDeleted(1);
+//        List<Test> tests = new ArrayList<>();
+//        tests.add(test);
+
+//        testService.updateById(test);
+//        testService.updateBatchById(tests);
+
+//        testService.saveOrUpdate(test);
+//        testService.saveOrUpdateBatch(tests);
+
+        List<TestData> dataList = new ArrayList<>();
+        TestData testData = new TestData();
+        testData.setId(2);
+        testData.setName("sdsadas");
+        dataList.add(testData);
+
+        LambdaUpdateWrapper<Test> update = new LambdaUpdateWrapper<>();
+        update.eq(Test::getId, id);
+        update.set(Test::getDeleted, 1);
+        update.set(Test::getData, dataList);
+        testService.update(update);
+
     }
 }
