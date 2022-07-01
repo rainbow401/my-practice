@@ -35,3 +35,4 @@ logs/
 *.log
 
 */jsoup/
+/src/main/java/com/practice/domain/jsoup/*
