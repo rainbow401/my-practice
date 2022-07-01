@@ -2,8 +2,10 @@ package com.practice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.practice.entity.Test;
+import com.practice.entity.TestData;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -22,4 +24,6 @@ public interface TestMapper extends BaseMapper<Test> {
 
     @MapKey("id")
     Map<Long, Test> getIdMapKey();
+
+    int updateData(@Param("data") List<TestData> data);
 }

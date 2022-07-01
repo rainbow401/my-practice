@@ -1,9 +1,12 @@
 package com.practice.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.practice.entity.typehandler.JsonArrayToListTypeHandler;
 import com.practice.entity.typehandler.JsonArrayToUserListHandler;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,7 +28,7 @@ public class Test implements Serializable {
     /**
      * 
      */
-    @TableField(value = "data", typeHandler = JsonArrayToUserListHandler.class)
+    @TableField(value = "data", typeHandler = JsonArrayToUserListHandler.class, jdbcType = JdbcType.JAVA_OBJECT)
     private List<TestData> data;
 
     private Date time;

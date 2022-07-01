@@ -1,7 +1,7 @@
 package com.practice.entity.typehandler;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
 import com.practice.entity.TestData;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@MappedTypes(List.class)
+@MappedTypes(TestData.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class JsonArrayToUserListHandler extends BaseTypeHandler<List<TestData>> {
 

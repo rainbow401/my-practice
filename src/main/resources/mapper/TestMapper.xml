@@ -18,4 +18,8 @@
     <select id="getIdMapKey" resultMap="BaseResultMap">
         select * from test
     </select>
+
+    <update id="updateData">
+        update test set data = #{data, typeHandler=com.practice.entity.typehandler.JsonArrayToUserListHandler}
+    </update>
 </mapper>

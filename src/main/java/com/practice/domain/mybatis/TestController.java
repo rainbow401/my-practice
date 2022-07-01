@@ -183,11 +183,6 @@ public class TestController {
 
     @GetMapping("/tableLogic/{id}")
     public void testTableLogic(@PathVariable("id") Long id) {
-//        Test test = new Test();
-//        test.setId(id);
-//        test.setDeleted(1);
-//        List<Test> tests = new ArrayList<>();
-//        tests.add(test);
 
 //        testService.updateById(test);
 //        testService.updateBatchById(tests);
@@ -203,9 +198,12 @@ public class TestController {
 
         LambdaUpdateWrapper<Test> update = new LambdaUpdateWrapper<>();
         update.eq(Test::getId, id);
-        update.set(Test::getDeleted, 1);
         update.set(Test::getData, dataList);
-        testService.update(update);
 
+        Test test = new Test();
+        test.setId(id);
+        test.setData(dataList);
+        testService.update(update);
+//        testMapper.update(update);
     }
 }

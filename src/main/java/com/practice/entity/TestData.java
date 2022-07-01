@@ -2,14 +2,22 @@ package com.practice.entity;
 
 import lombok.Data;
 
-import java.io.Serializable;
+import java.io.*;
 
 @Data
-public class TestData implements Serializable {
+public class TestData implements Externalizable {
 
     private Integer id;
 
     private String name;
 
-    private static final long serialVersionUID = 2L;
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeChars(this.toString());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        in.readChar();
+    }
 }
