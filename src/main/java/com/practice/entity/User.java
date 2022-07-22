@@ -13,12 +13,5 @@ public class User {
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    @TableField("loginName")
-    private String LoginName;
-
-    @TableField(value = "deletedAt",fill = FieldFill.UPDATE)
-    private LocalDateTime deletedAt;
-
-    @TableLogic(value = "0", delval = "1")
-    private Integer deleted;
+    private String userName;
 }

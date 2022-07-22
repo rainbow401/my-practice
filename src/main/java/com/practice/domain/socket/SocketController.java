@@ -17,7 +17,7 @@ public class SocketController {
 
     private final String SOCKET_SESSION_PREFIX = "user-";
 
-    private Map<String, Object> sessionPools = new TreeMap<>();
+    private final Map<String, Object> sessionPools = new TreeMap<>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") String userId) {

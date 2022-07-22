@@ -64,7 +64,10 @@ mybatis-plus:
       update-strategy: not_empty
   mapper-locations: classpath:mapper/*.xml
 
-
+auth:
+  exp: 3600000
+  secret: s/*-.1263@
+  issuer: my-practice
 
 
 
