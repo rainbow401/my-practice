@@ -1,7 +1,6 @@
 package com.practice.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -10,7 +9,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 
 import javax.mail.MessagingException;
@@ -117,7 +115,7 @@ public class EmailUtil {
             helper.setSubject("主题");
             helper.setText(replaceContent(params), true);
             helper.setTo(email);
-            helper.setFrom(email);
+            helper.setFrom("数科院" + "<" + email + ">");
             mailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -135,7 +133,7 @@ public class EmailUtil {
      * @throws IOException
      */
     public String replaceContent(Object ...params) throws IOException {
-//        File file = ResourceUtils.getFile("classpath:static/index.ftl");
+//        File file = ResourceUtils.getFile("classpath:static/index_backup.ftl");
 //        String content1 = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         Resource resource = new ClassPathResource("/static/index.ftl");
         //替换html模板中的参数

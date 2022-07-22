@@ -22,6 +22,6 @@ public class MailController {
 
     @PostMapping("/send")
     public void sendEmail(String to, String subject, String content) throws IOException {
-        emailUtil.sendEmailMessage("273697776@qq.com", "yanzhihao0", "yanzhihao1", "yanzhihao2");
+        emailUtil.sendEmailMessage("273697776@qq.com", "yanzhihao0", "yanzhihao1");
     }
 }
