@@ -36,3 +36,5 @@ logs/
 
 */jsoup/
 /src/main/java/com/practice/domain/jsoup/*
+
+application-local.yml
