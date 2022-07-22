@@ -3,10 +3,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.yanzhihao</groupId>
-    <artifactId>yanzhihao-practice</artifactId>
+    <artifactId>my-practice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>yanzhihao-practice</name>
-    <description>yanzhihao-practice</description>
+    <name>my-practice</name>
+    <description>my-practice</description>
 
 
 

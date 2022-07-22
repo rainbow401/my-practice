@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: yanzhihao-practice
+    name: my-practice
 #  cloud:
 #    discovery:
 #      register: true
