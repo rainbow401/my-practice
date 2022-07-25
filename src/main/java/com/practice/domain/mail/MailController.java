@@ -1,17 +1,12 @@
 package com.practice.domain.mail;
 
 import com.practice.utils.EmailUtil;
-import org.apache.commons.io.FileUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/mail/")

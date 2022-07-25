@@ -1,16 +1,15 @@
 package com.practice.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
@@ -30,7 +29,7 @@ public class EmailUtil {
     @Value("${spring.mail.from}") // 从application.yml配置文件中获取
     private String from; // 发送发邮箱地址
 
-    @Autowired
+    @Resource
     private JavaMailSender mailSender;
 
     /**
@@ -105,6 +104,7 @@ public class EmailUtil {
     /**
      * 发送邮件
      * @param email 发送给谁
+     * @param params 模板文件中需要替换的字符
      */
     public void sendEmailMessage(String email, Object ...params) {
         MimeMessage message = mailSender.createMimeMessage();
@@ -113,7 +113,7 @@ public class EmailUtil {
             //邮箱发送内容组成
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject("主题");
-            helper.setText(replaceContent(params), true);
+            helper.setText(buildHtmlContent(params), true);
             helper.setTo(email);
             helper.setFrom("数科院" + "<" + email + ">");
             mailSender.send(message);
@@ -132,10 +132,8 @@ public class EmailUtil {
      * @return 替换后的html文件字符串
      * @throws IOException
      */
-    public String replaceContent(Object ...params) throws IOException {
-//        File file = ResourceUtils.getFile("classpath:static/index_backup.ftl");
-//        String content1 = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        Resource resource = new ClassPathResource("/static/index.ftl");
+    public String buildHtmlContent(Object ...params) throws IOException {
+        ClassPathResource resource = new ClassPathResource("/static/index.ftl");
         //替换html模板中的参数
         return MessageFormat.format(StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8), params);
     }
