@@ -54,6 +54,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
+
 # mybatis配置
 mybatis-plus:
   configuration:
@@ -68,6 +69,8 @@ auth:
   exp: 3600000
   secret: s/*-.1263@
   issuer: my-practice
+
+
 
 
 

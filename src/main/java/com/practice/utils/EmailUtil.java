@@ -8,13 +8,20 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.activation.DataSource;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.Map;
 
 /**
  * @ClassName EmailUtil
@@ -31,6 +38,9 @@ public class EmailUtil {
 
     @Resource
     private JavaMailSender mailSender;
+
+    @Resource
+    private TemplateEngine templateEngine;
 
     /**
      * 发送纯文本邮件信息
@@ -103,26 +113,60 @@ public class EmailUtil {
 
     /**
      * 发送邮件
-     * @param email 发送给谁
-     * @param params 模板文件中需要替换的字符
+     * @param toEmails 接收方
+     * @param from 发送方
+     * @param subject 主题
+     * @param mailTemplatePath 邮件模板路径 eg: "/index",即 resources/templates/index.html
+     * @param param 替换模板中的参数
      */
-    public void sendEmailMessage(String email, Object ...params) {
+    public void sendEmail(String[] toEmails, String from, String subject, String mailTemplatePath, Map<String, Object> param) throws MessagingException {
+
         MimeMessage message = mailSender.createMimeMessage();
-        try {
-            //获取验证码 存入redis
-            //邮箱发送内容组成
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setSubject("主题");
-            helper.setText(buildHtmlContent(params), true);
-            helper.setTo(email);
-            helper.setFrom("数科院" + "<" + email + ">");
-            mailSender.send(message);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setSubject(subject);
+        helper.setTo(toEmails);
+        helper.setFrom(from);
+
+        // 替换html中的参数
+        Context context = new Context();
+        context.setVariables(param);
+        String htmlText = templateEngine.process(mailTemplatePath, context);
+        helper.setText(htmlText, true);
+
+        // 发送邮件
+        mailSender.send(message);
+    }
+
+    /**
+     * 发送邮件
+     * @param toEmails 接收方
+     * @param from 发送方
+     * @param subject 主题
+     * @param mailTemplatePath 邮件模板路径 eg: "/index",即 resources/templates/index.html
+     * @param param 替换模板中的参数
+     */
+    public void sendEmailWithAttachments(String[] toEmails, String from, String subject, String mailTemplatePath, Map<String, Object> param, Map<String, File> files) throws MessagingException, IOException {
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setSubject(subject);
+        helper.setTo(toEmails);
+        helper.setFrom(from);
+
+        // 添加附件
+        for (Map.Entry<String, File> entry : files.entrySet()) {
+            helper.addAttachment(entry.getKey(), entry.getValue());
         }
+
+
+        // 替换html中的参数
+        Context context = new Context();
+        context.setVariables(param);
+        String htmlText = templateEngine.process(mailTemplatePath, context);
+        helper.setText(htmlText, true);
+
+        // 发送邮件
+        mailSender.send(message);
     }
 
     /**
@@ -130,20 +174,11 @@ public class EmailUtil {
      * {0}，{1}，{2} 数字代表顺序
      * @param params 替换值
      * @return 替换后的html文件字符串
-     * @throws IOException
      */
     public String buildHtmlContent(Object ...params) throws IOException {
-        ClassPathResource resource = new ClassPathResource("/static/index.ftl");
+        ClassPathResource resource = new ClassPathResource("/templates/index.html");
         //替换html模板中的参数
         return MessageFormat.format(StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8), params);
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
     }
 }
 

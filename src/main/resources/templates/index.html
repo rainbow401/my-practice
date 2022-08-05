@@ -9,19 +9,19 @@
 </head>
 <!--邮箱验证码模板-->
 
-<body>
-  <div style="background-color:#ECECEC; padding: 35px;">
+<body style="margin: 0">
+  <div style="background-color:#ECECEC; padding-top: 35px; padding-bottom: 35px;">
     <table
       style="width: 800px;height: 100%; margin: 0 auto; text-align: left; position: relative; border-radius: 5px;font-size: 14px; font-family:微软雅黑, 黑体,serif; line-height: 1.5; box-shadow: rgb(153, 153, 153) 0 0 5px; border-collapse: collapse; background: #fff initial initial initial initial;">
       <tbody>
         <tr>
           <th
             style="height: 25px; line-height: 25px; padding: 15px 35px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #058061; background-color: #058061; border-radius: 5px 5px 0 0;">
-            <span style="color: rgb(255, 255, 255);  font-family: 微软雅黑,serif; font-size: large;">{0}</span>
+            <span th:text="${title}" style="color: rgb(255, 255, 255);  font-family: 微软雅黑,serif; font-size: large;">标题</span>
           </th>
         </tr>
         <tr>
-          <td style="word-break:break-all">
+          <td style="word-break:break-all;background-color:#fff">
             <div style="padding:25px 35px 40px; background-color:#fff;opacity:0.8;">
               <h2 style="margin: 5px 0;">
                 <span style="line-height: 20px;  color: #333333; ">
@@ -30,7 +30,7 @@
                 </span>
               </h2>
               <!-- 中文 -->
-              <p>您好！感谢您使用****，您的账号正在进行邮箱验证，验证码为：<span style="color: #ff8c00; ">{1}</span>，有效期30分钟，请尽快填写验证码完成验证！</p>
+              <p>您好！感谢您使用****，您的账号正在进行邮箱验证，验证码为：<span th:text="${code}" style="color: #ff8c00; ">验证码</span>，有效期30分钟，请尽快填写验证码完成验证！</p>
               <br>
               <br>
               <br>
