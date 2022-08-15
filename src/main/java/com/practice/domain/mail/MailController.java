@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
