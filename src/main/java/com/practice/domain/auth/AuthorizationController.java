@@ -3,38 +3,30 @@ package com.practice.domain.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.practice.entity.dto.LoginDTO;
+import com.practice.service.TokenStoreService;
+import com.practice.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 @RestController
 @RequestMapping("/auth")
+@AllArgsConstructor(onConstructor_ = {@Resource})
 public class AuthorizationController {
 
-    @Resource
-    private AuthProperties authProperties;
+    private final AuthProperties authProperties;
 
-    @GetMapping
-    public String generateToken() {
-        try {
+    private final TokenStoreService tokenStoreService;
 
-            Algorithm algorithm = Algorithm.HMAC256(authProperties.getSecret());
-            Date date = new Date(new Date().getTime() + authProperties.getExp());
-            return JWT.create()
-                    .withIssuer(authProperties.getIssuer())
-                    .withClaim("user", "nihao")
-                    .withExpiresAt(date)
-                    .sign(algorithm);
-        } catch (JWTCreationException e){
-            e.printStackTrace();
-            return "生成token失败";
-        }
+    private final UserService userService;
+
+    @PostMapping("/login")
+    public Boolean login(LoginDTO dto) {
+        return userService.login(dto);
     }
 
     @GetMapping("/check")

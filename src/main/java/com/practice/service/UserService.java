@@ -2,8 +2,10 @@ package com.practice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.practice.entity.User;
-import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Service;
+import com.practice.entity.dto.LoginDTO;
 
 public interface UserService extends IService<User> {
+
+    boolean login(LoginDTO dto);
+
 }
