@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor(onConstructor_ = {@Resource})
+@AllArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthorizationController {
 
     private final AuthProperties authProperties;

@@ -14,14 +14,13 @@ public class QuickStartConfiguration {
     @Bean
     public Dog dog1() {
         Dog dog = new Dog();
-        dog.setName("dog1");
         return dog;
     }
 
-    @Bean
-    public Dog dog2() {
-        Dog dog = new Dog();
-        dog.setName("dog2");
-        return dog;
-    }
+//    @Bean
+//    public Dog dog2() {
+//        Dog dog = new Dog();
+//        dog.setName("dog2");
+//        return dog;
+//    }
 }

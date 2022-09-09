@@ -5,12 +5,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.practice.entity.User;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.UUID;
 
-@AllArgsConstructor(onConstructor_ = {@Resource})
+@AllArgsConstructor(onConstructor_ = {@Autowired})
 public class TokenStore {
     private final AuthProperties authProperties;
 
