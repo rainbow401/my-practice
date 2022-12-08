@@ -6,11 +6,11 @@ import com.practice.auth.service.UserService;
 import com.practice.auth.entity.User;
 import com.practice.auth.entity.dto.LoginDTO;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor(onConstructor_ = {@Autowired})
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override

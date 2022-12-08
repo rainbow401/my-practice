@@ -1,4 +1,4 @@
-package com.practice.auth.entity.typehandler;
+package com.practice.typehandler;
 
 import com.alibaba.fastjson.JSON;
 import com.practice.auth.entity.TestData;

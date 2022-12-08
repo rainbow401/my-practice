@@ -1,7 +1,5 @@
-package com.practice.auth.entity.typehandler;
+package com.practice.typehandler;
 
-import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
-import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 
 public class JsonArrayToListTypeHandler extends JacksonTypeHandler {

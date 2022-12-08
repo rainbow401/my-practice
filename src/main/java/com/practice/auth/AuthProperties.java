@@ -1,11 +1,13 @@
 package com.practice.auth;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author yanzhihao
+ */
 @ConfigurationProperties(prefix = "auth")
-@Component
+@Configuration
 public class AuthProperties {
 
     private Long exp;

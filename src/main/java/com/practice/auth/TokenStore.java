@@ -5,28 +5,38 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.practice.auth.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.UUID;
 
-@AllArgsConstructor(onConstructor_ = {@Autowired})
+/**
+ * token
+ * @author yanzhihao
+ */
+@Component
+@RequiredArgsConstructor
 public class TokenStore {
+
     private final AuthProperties authProperties;
 
     public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(authProperties.getSecret());
-            Date date = new Date(new Date().getTime() + authProperties.getExp());
+            Date date = new Date(System.currentTimeMillis() + authProperties.getExp());
             return JWT.create()
                     .withIssuer(authProperties.getIssuer())
                     .withClaim("user", "nihao")
                     .withExpiresAt(date)
                     .withJWTId(UUID.randomUUID().toString())
                     .sign(algorithm);
-        } catch (JWTCreationException e){
+        } catch (JWTCreationException e) {
             e.printStackTrace();
             return "生成token失败";
         }
     }
+
+
 }

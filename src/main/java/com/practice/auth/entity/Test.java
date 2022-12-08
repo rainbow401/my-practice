@@ -1,7 +1,7 @@
 package com.practice.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.practice.auth.entity.typehandler.JsonArrayToUserListHandler;
+import com.practice.typehandler.JsonArrayToUserListHandler;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 

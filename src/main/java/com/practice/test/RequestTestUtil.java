@@ -3,6 +3,7 @@ package com.practice.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,7 @@ import java.nio.charset.StandardCharsets;
  * 单元测试工具类，可以模拟带token的请求
  * @author yanzhihao
  */
+@Slf4j
 @Component
 public class RequestTestUtil {
 
@@ -44,11 +46,17 @@ public class RequestTestUtil {
 
     @PostConstruct
     public void initToken() throws Exception {
-        Resource resource = new PathResource(TOKEN_FILE_PATH);
-        this.TOKEN = JsonUtil.jsonRead(resource.getFile());
-        if (StringUtils.isBlank(this.TOKEN)) {
-            throw new Exception("token为空");
+        try {
+            Resource resource = new PathResource(TOKEN_FILE_PATH);
+            this.TOKEN = JsonUtil.jsonRead(resource.getFile());
+            if (StringUtils.isBlank(this.TOKEN)) {
+                throw new Exception("token为空");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("初始化{}失败", RequestTestUtil.class);
         }
+
     }
 
     public String post(String url, String body, MultiValueMap<String, String> queryParams, MultiValueMap<String, String> params) throws Exception {

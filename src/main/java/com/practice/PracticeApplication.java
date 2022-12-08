@@ -3,6 +3,7 @@ package com.practice;
 import com.practice.springlearn.ioc.annotation.QuickStartConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,13 +11,13 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.Arrays;
 
 @SpringBootApplication
-@MapperScan("com.practice.mapper")
+@MapperScan("com.practice.*")
 @Slf4j
 public class PracticeApplication {
 
-//    public static void main(String[] args) {
-//        SpringApplication.run(PracticeApplication.class, args);
-//    }
+    public static void main(String[] args) {
+        SpringApplication.run(PracticeApplication.class, args);
+    }
 
 //    public static void main(String[] args) throws Exception{
 //
@@ -45,13 +46,13 @@ public class PracticeApplication {
 //        }
 //    }
 
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(QuickStartConfiguration.class);
-        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-
-//        Toy toy = applicationContext.getBean(Toy.class);
-//        System.out.println("toy = " + toy);
-
-        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-    }
+//    public static void main(String[] args) {
+//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(QuickStartConfiguration.class);
+//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+//
+////        Toy toy = applicationContext.getBean(Toy.class);
+////        System.out.println("toy = " + toy);
+//
+//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
+//    }
 }

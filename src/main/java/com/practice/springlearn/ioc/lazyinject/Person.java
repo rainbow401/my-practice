@@ -5,11 +5,11 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @Data
 public class Person {
 
-    @Autowired
+//    @Autowired
     private ObjectProvider<Dog> dog;
 
 //    @Autowired
