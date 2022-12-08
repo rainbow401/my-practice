@@ -1,21 +1,13 @@
 package com.practice;
 
-import com.practice.domain.springlearn.ioc.annotation.QuickStartConfiguration;
-import com.practice.domain.springlearn.ioc.aware.AwareConfiguration;
-import com.practice.domain.springlearn.ioc.aware.AwareTestBean;
-import com.practice.domain.springlearn.ioc.factorybean.FactoryBeanConfiguration;
-import com.practice.domain.springlearn.ioc.factorybean.Toy;
-import com.practice.domain.springlearn.ioc.lazyinject.Person;
-import lombok.experimental.SuperBuilder;
+import com.practice.springlearn.ioc.annotation.QuickStartConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 
 import java.util.Arrays;
-import java.util.Map;
 
 @SpringBootApplication
 @MapperScan("com.practice.mapper")
