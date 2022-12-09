@@ -1,58 +1,37 @@
 package com.practice;
 
-import com.practice.springlearn.ioc.annotation.QuickStartConfiguration;
+import com.practice.customconfig.CustomConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.PropertySource;
 
-import java.util.Arrays;
+import java.util.Iterator;
 
 @SpringBootApplication
 @MapperScan("com.practice.*")
 @Slf4j
+
 public class PracticeApplication {
 
+    @Autowired
+    private CustomConfig customConfig;
+
     public static void main(String[] args) {
-        SpringApplication.run(PracticeApplication.class, args);
+        ConfigurableApplicationContext ctx = SpringApplication.run(PracticeApplication.class, args);
+        ConfigurableEnvironment environment = ctx.getEnvironment();
+        Iterator<PropertySource<?>> iterator = environment.getPropertySources().stream().iterator();
+        while (iterator.hasNext()) {
+            PropertySource<?> next = iterator.next();
+            Object demo = next.getProperty("demo");
+            System.out.println("demo = " + demo);
+        }
+        CustomConfig customConfig = (CustomConfig) ctx.getBean("customConfig");
+        System.out.println("customConfig = " + customConfig);
     }
 
-//    public static void main(String[] args) throws Exception{
-//
-//        ApplicationContext ctx = new AnnotationConfigApplicationContext(QuickStartConfiguration.class);
-//        for (String beanDefinitionName : ctx.getBeanDefinitionNames()) {
-//            System.out.println("beanDefinitionName = " + beanDefinitionName);
-//        }
-//        System.out.println("ctx.getBean(Person.class) = " + ctx.getBean(Person.class));
-//    }
-
-//    public static void main(String[] args) {
-//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AwareConfiguration.class);
-//        AwareTestBean awareTestBean = applicationContext.getBean(AwareTestBean.class);
-//        System.out.println("awareTestBean.getBeanName() = " + awareTestBean.getBeanName());
-//        System.out.println("awareTestBean.getName() = " + awareTestBean.getName());
-//        System.out.println("------------");
-//        awareTestBean.printBeanNames();
-//    }
-
-//    public static void main(String[] args) {
-//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(Person.class);
-//        Person person = applicationContext.getBean(Person.class);
-//        System.out.println("person = " + person);
-//        for (String beanDefinitionName : applicationContext.getBeanDefinitionNames()) {
-//            System.out.println("beanDefinitionName = " + beanDefinitionName);
-//        }
-//    }
-
-//    public static void main(String[] args) {
-//        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(QuickStartConfiguration.class);
-//        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-//
-////        Toy toy = applicationContext.getBean(Toy.class);
-////        System.out.println("toy = " + toy);
-//
-//        Arrays.stream(beanDefinitionNames).forEach(System.out::println);
-//    }
 }
