@@ -3,7 +3,7 @@ package com.practice.tree;
 import java.util.List;
 
 /**
- * 树节点细心
+ * 树节点信息
  * @author yanzhihao
  */
 public interface Node<T> {
@@ -21,11 +21,6 @@ public interface Node<T> {
     T getParentId();
 
     /**
-     * 获取树节点数据
-     * @return 树节点数据
-     */
-
-    /**
      * 获取子节点数据
      * @return 子节点数据
      */
@@ -33,6 +28,7 @@ public interface Node<T> {
 
     /**
      * 设置子节点数据
+     * @param child 数据
      */
     void setChild(List<Node<T>> child);
 }

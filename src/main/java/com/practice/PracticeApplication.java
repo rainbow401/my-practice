@@ -12,10 +12,9 @@ import org.springframework.core.env.PropertySource;
 
 import java.util.Iterator;
 
-@SpringBootApplication
-@MapperScan("com.practice.*")
 @Slf4j
-
+@MapperScan("com.practice.*")
+@SpringBootApplication
 public class PracticeApplication {
 
     @Autowired
