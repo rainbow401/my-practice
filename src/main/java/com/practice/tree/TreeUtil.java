@@ -12,9 +12,9 @@ import java.util.List;
  * 树结构数据处理工具
  * @author yanzhihao
  */
-public class TreeUtil<T> {
+public class TreeUtil {
 
-    private List<? extends Node<T>> sortNode(List<? extends Node<T>> nodes, Comparator<Node<T>> comparator) {
+    private <T> List<? extends Node<T>> sortNode(List<? extends Node<T>> nodes, Comparator<Node<T>> comparator) {
         nodes.sort(comparator);
         return nodes;
     }
@@ -22,7 +22,7 @@ public class TreeUtil<T> {
     /**
      * 借助HashMap完成查询
      */
-    public List<Node<T>> getTreeByMap(List<? extends Node<T>> nodes) {
+    public <T> List<Node<T>> getTreeByMap(List<? extends Node<T>> nodes) {
         List<Node<T>> resultList = new ArrayList<>();
         List<Node<T>> rootList = new ArrayList<>();
         HashMap<T, List<Node<T>>> childMap = new HashMap<>(48);
@@ -54,7 +54,7 @@ public class TreeUtil<T> {
         return resultList;
     }
 
-    private List<Node<T>> getChildrenList(T id, HashMap<T, List<Node<T>>> childMap) {
+    private <T> List<Node<T>> getChildrenList(T id, HashMap<T, List<Node<T>>> childMap) {
         List<Node<T>> result = new ArrayList<>();
         List<Node<T>> childList = childMap.get(id);
         if (childList == null) {
