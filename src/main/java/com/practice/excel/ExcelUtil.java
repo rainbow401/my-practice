@@ -6,12 +6,17 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,54 +24,75 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author yanzhihao
  * @Description:
+ * eg: ExcelUtil.exportExcel(data);
  * @date 2021/10/29 8:47 上午
  */
 public class ExcelUtil {
 
+    public static <T> void exportExcel(List<T> data) throws Exception {
+        ExcelConfig config = new ExcelConfig();
+        config.setFileName(UUID.randomUUID().toString().replace("-", ""));
 
-    public static void exportExcel(HttpServletRequest request, HttpServletResponse response, List<Object> data, Class<?> clazz) throws Exception {
-        ExcelConfig config = new ExcelConfig(clazz);
-        exportExcel(request, response, data, config);
+        exportExcel(data, config);
     }
 
-    /**
-     * 导出数组为excel
-     * 结合 @ExcelColumn 注解使用
-     *
-     * @param data   要导出的数据
-     * @param config 相关配置
-     */
-    public static void exportExcel(HttpServletRequest request, HttpServletResponse response, List<Object> data, ExcelConfig config) throws Exception {
-        Class<?> clazz = config.getClazz();
+    public static <T> void exportExcel(List<T> data, String fileName) throws Exception {
+        ExcelConfig config = new ExcelConfig();
+        config.setFileName(fileName);
+
+        exportExcel(data, config);
+    }
+
+    public static <T> void exportExcel(List<T> data, Integer width) throws Exception {
+        ExcelConfig config = new ExcelConfig();
+        config.setWidth(width);
+
+        exportExcel(data, config);
+    }
+
+    public static <T> void exportExcel(List<T> data, ExcelConfig config) throws Exception {
+        ServletRequestAttributes servletRequestAttributes =  (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        if (servletRequestAttributes == null) {
+            throw new RuntimeException("servletRequestAttributes is null");
+        }
+
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpServletResponse response = servletRequestAttributes.getResponse();
+        if (response == null) {
+            throw new RuntimeException("response is null");
+        }
+
+        doExportExcel(request, response, data, config);
+    }
+
+        /**
+         * 导出数组为excel
+         * 结合 @ExcelColumn 注解使用
+         *
+         * @param data   要导出的数据
+         * @param config 相关配置
+         */
+    public static <T> void doExportExcel(HttpServletRequest request, HttpServletResponse response, List<T> data, ExcelConfig config) throws Exception {
         String fileName = config.getFileName();
         Integer width = config.getWidth();
         String nullFillStr = config.getNullFillStr();
-        XSSFWorkbook xssfWorkbook = createXSSFWorkbook(data, width, clazz, nullFillStr);
+
+        Workbook workbook = createWorkbook(data, width, nullFillStr);
+
         try {
             String agent = request.getHeader("USER-AGENT").toLowerCase();
-
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            String fileNameURL;
-            if (agent.contains("firefox")) {
-
-                fileNameURL = URLEncoder.encode(fileName + ".xlsx", "ISO8859-1");
-                response.setHeader("Content-Disposition", "attachment;filename=" + fileNameURL + ";" + "filename*=ISO8859-1''" + fileNameURL);
-            } else {
-                fileNameURL = URLEncoder.encode(fileName + ".xlsx", "UTF-8");
-                response.setHeader("Content-Disposition", "attachment;filename=" + fileNameURL + ";" + "filename*=utf-8''" + fileNameURL);
-            }
-            response.addHeader("Cache-Control", "no-cache");
-            xssfWorkbook.write(response.getOutputStream());
-            xssfWorkbook.close();
+            setResponse(response, fileName, agent);
+            workbook.write(response.getOutputStream());
+            workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
             try {
-                xssfWorkbook.close();
+                workbook.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -75,16 +101,29 @@ public class ExcelUtil {
 
     }
 
+    private static void setResponse(HttpServletResponse response, String fileName, String agent) throws UnsupportedEncodingException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String fileNameUrl;
+        if (agent.contains("firefox")) {
+            fileNameUrl = URLEncoder.encode(fileName + ".xlsx", "ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileNameUrl + ";" + "filename*=ISO8859-1''" + fileNameUrl);
+        } else {
+            fileNameUrl = URLEncoder.encode(fileName + ".xlsx", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileNameUrl + ";" + "filename*=utf-8''" + fileNameUrl);
+        }
+        response.addHeader("Cache-Control", "no-cache");
+    }
+
     /**
      * 写入每个excel单元格数据和样式
      *
      * @param data  需要导出的数据
      * @param width 每列宽度
-     * @param clazz 映射的类
      * @return XSSFWorkbook
      */
-    public static XSSFWorkbook createXSSFWorkbook(List<Object> data, Integer width, Class<?> clazz, String nullFillStr) {
-
+    public static <T> Workbook createWorkbook(List<T> data, Integer width, String nullFillStr) {
+        Class<?> clazz = data.get(0).getClass();
         //获取实体类对应excel列名称和java对象的属性名称
         Map<Integer, String> map = getClazzInfo(clazz);
         Map<Integer, String> excelHeaders = new HashMap<>();
@@ -98,18 +137,18 @@ public class ExcelUtil {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
         //首行
         //字体加粗style
-        CellStyle headerCellFontStyle = xssfWorkbook.createCellStyle();
+        CellStyle headerCellStyle = xssfWorkbook.createCellStyle();
         Font font = xssfWorkbook.createFont();
         font.setBold(true);
-        headerCellFontStyle.setFont(font);
+        headerCellStyle.setFont(font);
         //下边框
-        headerCellFontStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
         //左边框
-        headerCellFontStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
         //上边框
-        headerCellFontStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
         //右边框
-        headerCellFontStyle.setBorderRight(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
 
         //数据行，边框
         CellStyle borderStyle = xssfWorkbook.createCellStyle();
@@ -129,7 +168,7 @@ public class ExcelUtil {
         excelHeaders.forEach((integer, s) -> {
             Cell headerCell = headerRow.createCell(integer);
             headerCell.setCellValue(s);
-            headerCell.setCellStyle(headerCellFontStyle);
+            headerCell.setCellStyle(headerCellStyle);
             sheet.setColumnWidth(integer, width * 1000);
         });
 
@@ -160,7 +199,7 @@ public class ExcelUtil {
      * @param obj  需要获取的对象
      * @return 属性值
      */
-    public static Object getDeclaredFieldValue(String name, Object obj) {
+    public static <T> Object getDeclaredFieldValue(String name, T obj) {
         try {
             Class<?> clazz = obj.getClass();
             Field field = clazz.getDeclaredField(name);

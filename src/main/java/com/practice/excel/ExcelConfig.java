@@ -1,11 +1,8 @@
 package com.practice.excel;
 
-import lombok.Data;
-
 /**
  * @author yanzhihao
  */
-@Data
 public class ExcelConfig {
     /**
      * 要导出的映射类
@@ -36,5 +33,37 @@ public class ExcelConfig {
     }
 
     public ExcelConfig() {
+    }
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public String getNullFillStr() {
+        return nullFillStr;
+    }
+
+    public void setNullFillStr(String nullFillStr) {
+        this.nullFillStr = nullFillStr;
     }
 }
