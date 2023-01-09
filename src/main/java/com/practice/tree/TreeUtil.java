@@ -32,15 +32,7 @@ public class TreeUtil {
             if (parentId == null) {
                 rootList.add(node);
             } else {
-                List<Node<T>> value = childMap.get(parentId);
-                if (value == null) {
-                    value = new ArrayList<>();
-                    value.add(node);
-
-                    childMap.put(parentId, value);
-                } else {
-                    value.add(node);
-                }
+                childMap.computeIfAbsent(parentId, (key) -> new ArrayList<>()).add(node);
             }
         }
 

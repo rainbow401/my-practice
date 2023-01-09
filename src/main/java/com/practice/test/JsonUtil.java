@@ -176,5 +176,16 @@ public class JsonUtil {
         long end = System.currentTimeMillis();
         log.info("打印接口返回值耗时: {}", end - start);
     }
+
+
+    public static String readFile(String path) throws IOException {
+        Resource resource = new PathResource(path);
+        boolean exists = resource.exists();
+        if (!exists) {
+            throw new FileNotFoundException();
+        }
+
+        return jsonRead(resource.getFile());
+    }
 }
 
