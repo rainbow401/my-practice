@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
  * @author yanzhihao
  */
 @Slf4j
-@Component
+//@Component
 public class RequestTestUtil {
 
     private MockMvc mockMvc;
