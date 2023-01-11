@@ -1,5 +1,8 @@
 package com.practice.threadlocal.userinfo.annotation;
 
+import com.practice.threadlocal.userinfo.enums.InjectType;
+import org.bytedeco.libfreenect._freenect_device;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,4 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface InjectUser {
+
+    InjectType type() default InjectType.INTERCEPTOR;
+
 }
