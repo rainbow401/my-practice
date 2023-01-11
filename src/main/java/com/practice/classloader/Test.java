@@ -1,7 +1,7 @@
 package com.practice.classloader;
 
 import com.practice.PracticeApplication;
-import com.practice.utils.FileUtils;
+import com.practice.file.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;

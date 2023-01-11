@@ -1,6 +1,6 @@
 # 工程简介
-1. TicketGrabController
-+ Redis + kafka + mysql 实现抢票
+## com.practice.ticket
+Redis + kafka + mysql 抢购
 
 # 延伸阅读
 
@@ -26,3 +26,24 @@ CREATE TABLE `ticket_tel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29592 DEFAULT CHARSET=latin1;
 ```
+## com.practice.algorithm.search.erfen 二分算法
+## com.practice.auth jwt认证
+## com.practice.classloader classloader 测试
+## com.practice.cruddb 数据库操作工具
+## com.practice.customconfig 自定义yaml文件测试
+## com.practice.excel excel 导出
+## com.practice.javacv javacv 处理视频流
+## com.practice.jdbcTemplate jdbcTemplate
+## com.practice.mail 邮件发送
+## com.practice.mybatisplus mybatisplus 配置、批量操作
+## com.practice.proxy 动态代理
+## com.practice.quartz quartz定时任务
+## com.practice.redis redisTemplate
+com.practice.springlearn.ioc springioc 学习
+com.practice.test 测试工具
+
+com.practice.threadlocal ThreadLocal实践
+
+com.practice.tree tree数据工具类
+com.practice.typehandler mybatis/mybatisplus typehandler
+com.practice.websocket 

@@ -1,6 +1,5 @@
-package com.practice.utils;
+package com.practice.file;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
