@@ -13,11 +13,10 @@ import java.util.List;
  * @date 2023/1/9
  * @Description 城市
  */
-@JsonView(TreeNodeView.class)
+@JsonView(CityEntity.View.class)
 public class CityEntity implements Node<String> {
     private String province;
 
-    @JsonView(TreeNodeView.class)
     private String abbreviate;
 
     private String name;
@@ -96,5 +95,9 @@ public class CityEntity implements Node<String> {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
+    }
+
+    public interface View extends Node.View{
+
     }
 }

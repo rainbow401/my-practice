@@ -77,51 +77,6 @@ public class JsonUtil {
         return JSONArray.parseArray(jsonStr, clazz);
     }
 
-
-    public static void appendObjectJsonStringToFile(String path, Object data) throws IOException {
-        PathResource resource = new PathResource(path);
-        String jsonStr = JSONObject.toJSONString(data, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
-        FileWriter fw = null;
-        PrintWriter write = null;
-        File file = null;
-        try {
-            file = resource.getFile();
-            fw = new FileWriter(file, true);
-            write = new PrintWriter(fw);
-            write.println("=================================================\r\n" + jsonStr);
-            write.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            assert fw != null;
-            fw.close();
-            assert write != null;
-            write.close();
-        }
-    }
-
-    public static void appendObjectJsonStringToFile(String path, Object data, Integer index) throws IOException {
-        PathResource resource = new PathResource(path);
-        String jsonStr = JSONObject.toJSONString(data, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
-        FileWriter fw = null;
-        PrintWriter write = null;
-        File file = null;
-        try {
-            file = resource.getFile();
-            fw = new FileWriter(file, true);
-            write = new PrintWriter(fw);
-            write.println(index + " =================================================\r\n" + jsonStr);
-            write.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            assert fw != null;
-            fw.close();
-            assert write != null;
-            write.close();
-        }
-    }
-
     public static void appendJsonStringToFile(String path, String jsonStr, Integer index) throws IOException {
         PathResource resource = new PathResource(path);
         FileWriter fw = null;

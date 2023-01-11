@@ -1,13 +1,11 @@
 package com.practice.tree.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.practice.response.ResponseResult;
 import com.practice.test.JsonUtil;
-import com.practice.threadlocal.userinfo.annotation.InjectUser;
-import com.practice.tree.CommonNode;
-import com.practice.tree.JsonResult;
+import com.practice.threadlocal.userinfo.context.UserInfoService;
 import com.practice.tree.Node;
 import com.practice.tree.TreeUtil;
-import com.practice.tree.annotation.TreeNodeView;
 import com.practice.tree.province.CityEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +23,15 @@ import java.util.List;
 @RequestMapping("/tree")
 public class TestTreeController {
 
-//    @JsonView(TreeNodeView.class)
+    private UserInfoService userInfoService;
+
+    @JsonView(Node.View.class)
     @GetMapping("/test")
-    public JsonResult<List<Node<String>>> getList() throws IOException {
+    public ResponseResult<List<Node<String>>> getList() throws IOException {
         String path = "src/main/java/com/practice/tree/province/dataList.json";
         List<CityEntity> list = JsonUtil.getListByFile(path, CityEntity.class);
         TreeUtil treeUtil = new TreeUtil();
 
-        return JsonResult.success("",treeUtil.getTreeByMap(list));
+        return ResponseResult.success(treeUtil.getTreeByMap(list));
     }
 }
