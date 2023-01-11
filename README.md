@@ -39,11 +39,9 @@ CREATE TABLE `ticket_tel` (
 ## com.practice.proxy 动态代理
 ## com.practice.quartz quartz定时任务
 ## com.practice.redis redisTemplate
-com.practice.springlearn.ioc springioc 学习
-com.practice.test 测试工具
-
-com.practice.threadlocal ThreadLocal实践
-
-com.practice.tree tree数据工具类
-com.practice.typehandler mybatis/mybatisplus typehandler
-com.practice.websocket 
+## com.practice.springlearn.ioc springioc 学习
+## com.practice.test 测试工具
+## com.practice.threadlocal ThreadLocal实践
+## com.practice.tree tree数据工具类
+## com.practice.typehandler mybatis/mybatisplus typehandler
+## com.practice.websocket 
