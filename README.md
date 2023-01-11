@@ -1,11 +1,10 @@
 # 工程简介
 ## com.practice.ticket
-Redis + kafka + mysql 抢购
+Redis + kafka + mysql 抢购 
 
-# 延伸阅读
+环境搭建
 
-# 环境搭建
-### docker + nacos + zookeeper + kafka 
+docker + nacos + zookeeper + kafka 
 ``` java
 //nacos
 docker run --name nacos-quick -e MODE=standalone -e MYSQL_SERVICE_HOST=host.docker.internal -e MYSQL_SERVICE_PORT=3306 -e MYSQL_SERVICE_DB_NAME=nacos -e MYSQL_SERVICE_USER=root -e MYSQL_SERVICE_PASSWORD=123456 -e SPRING_DATASOURCE_PLATFORM=mysql -p 8848:8848 -d zill057/nacos-server-apple-silicon:2.0.3
