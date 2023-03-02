@@ -19,6 +19,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+        <javacv.version>1.5.5</javacv.version>
+        <system.windowsx64>windows-x86_64</system.windowsx64>
     </properties>
 
     <dependencies>
@@ -73,17 +75,26 @@
             <version>2.0.20</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.bytedeco</groupId>-->
+<!--            <artifactId>javacv</artifactId>-->
+<!--            <version>1.5.7</version>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.bytedeco/javacv-platform &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.bytedeco</groupId>-->
+<!--            <artifactId>javacv-platform</artifactId>-->
+<!--            <version>1.5.7</version>-->
+<!--        </dependency>-->
+        <!-- 全量包-->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv</artifactId>
-            <version>1.5.7</version>
+            <version>1.5.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv-platform</artifactId>
-            <version>1.5.7</version>
-        </dependency>
+
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
