@@ -1,0 +1,238 @@
+<h1 class="heading">3. 启动引导：SpringBoot入门程序原理概述和包扫描</h1>
+<p>启动引导部分大纲：</p>
+<p></p>
+<figure><img
+        src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/11/5/16e3b73d238f1154~tplv-t2oaga2asx-image.image">
+    <figcaption></figcaption>
+</figure><p></p>
+<h2 class="heading">1. 入门程序创建</h2>
+<p>如何创建 SpringBoot 应用我就不多提了吧，过程非常简单。如果通过 IDEA/eclipse 的 SpringInitializer 创建就更简单了。这里我选择使用
+    SpringInitializer 来快速创建 SpringBoot 应用。</p>
+<p>入门程序中，pom文件我只引入了 <code>spring-boot-starter-web</code>：</p>
+<pre><code class="hljs xml" lang="xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span
+            class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span
+            class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre><p>下面我们先来编写一个 SpringBoot 的主启动类：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span
+            class="hljs-title">DemoApplication</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span
+            class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>{
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+</code></pre><p>这可能是一个最简单的 SpringBoot 应用启动引导类了，运行主启动类的main方法就可以启动 SpringBoot 应用。</p>
+<p>主启动类上必须要标注 <code>@SpringBootApplication</code> 注解，如果主启动类没有被 <code>@SpringBootApplication</code>
+    标注，启动时会报一个错误：</p>
+<pre><code class="hljs bash" lang="bash">org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.context.ApplicationContextException: Unable to start ServletWebServerApplicationContext due to missing ServletWebServerFactory bean.
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:155) ~[spring-boot-2.1.9.RELEASE.jar:2.1.9.RELEASE]
+	......
+</code></pre><p>我们来划重点：<strong>Unable to start ServletWebServerApplicationContext due to missing
+    ServletWebServerFactory bean.</strong></p>
+<p>因为没有 <code>ServletWebServerFactory</code>，而导致无法启动IOC容器。</p>
+<p>所以被传入的类要被 <code>@SpringBootApplication</code> 标注。</p>
+<p>为什么需要 <code>@SpringBootApplication</code>，就需要从它入手。</p>
+<h2 class="heading">2. SpringBootApplication</h2>
+<pre><code class="hljs java" lang="java"><span class="hljs-comment">/**
+ * ......
+ * <span class="hljs-doctag">@since</span> 1.2.0
+ */</span>
+<span class="hljs-meta">@SpringBootConfiguration</span>
+<span class="hljs-meta">@EnableAutoConfiguration</span>
+<span class="hljs-meta">@ComponentScan</span>(excludeFilters = { <span class="hljs-meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+		<span class="hljs-meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootApplication
+</code></pre><p>由文档注释可见，它是来自 SpringBoot1.2.0，其实在 SpringBoot1.1 及以前的版本，在启动类上标注的注解应该是三个：<code>@Configuration</code>
+    + <code>@EnableAutoConfiguration</code> + <code>@ComponentScan</code>，只不过从1.2以后 SpringBoot 帮我们整合起来了。
+</p>
+<p>文档注释原文翻译：</p>
+<blockquote>
+    <p>Indicates a configuration class that declares one or more @Bean methods and also triggers auto-configuration and
+        component scanning. This is a convenience annotation that is equivalent to declaring @Configuration,
+        @EnableAutoConfiguration and @ComponentScan.</p>
+    <p>标识了一个配置类，这个配置类上声明了一个或多个 <code>@Bean</code> 的方法，并且它会触发自动配置和组件扫描。</p>
+    <p>这是一个很方便的注解，它等价于同时标注 <code>@Configuration</code> + <code>@EnableAutoConfiguration</code> +
+        <code>@ComponentScan</code> 。</p>
+</blockquote>
+<p>文档注释已经描述的很详细：它是一个<strong>组合注解</strong>，包括3个注解。标注它之后就会触发自动配置（<code>@EnableAutoConfiguration</code>）和组件扫描（<code>@ComponentScan</code>）。
+</p>
+<p>至于这几个注解分别都起什么作用，咱们来一个一个看。</p>
+<h2 class="heading">3. @ComponentScan</h2>
+<p>这个注解咱们在 SpringFramework 中有接触过，它可以指定包扫描的根路径，让 SpringFramework
+    来扫描指定包及子包下的组件，也可以不指定路径，默认扫描当前配置类所在包及子包里的所有组件**（其实这就解释了为什么
+    SpringBoot 的启动类要放到所有类所在包的最外层）**。</p>
+<p>不过在上面的声明中有显式的指定了两个过滤条件：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-meta">@ComponentScan</span>(excludeFilters = { <span
+        class="hljs-meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+		<span class="hljs-meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+</code></pre><p>这两个过滤器估计有猫腻，咱还得研究一下它们。</p>
+<h3 class="heading">3.1 TypeExcludeFilter</h3>
+<p>文档注释原文翻译：</p>
+<blockquote>
+    <p>Provides exclusion TypeFilters that are loaded from the BeanFactory and automatically applied to
+        SpringBootApplication scanning. Can also be used directly with @ComponentScan as follows:</p>
+    <pre><code> @ComponentScan(excludeFilters = @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class))
+</code></pre>
+    <p>Implementations should provide a subclass registered with BeanFactory and override the match(MetadataReader,
+        MetadataReaderFactory) method. They should also implement a valid hashCode and equals methods so that they can
+        be used as part of Spring test's application context caches.
+        Note that TypeExcludeFilters are initialized very early in the application lifecycle, they should generally not
+        have dependencies on any other beans. They are primarily used internally to support spring-boot-test.</p>
+    <p>提供从 BeanFactory 加载并自动应用于 <code>@SpringBootApplication</code> 扫描的排除 <code>TypeFilter</code> 。</p>
+    <p>实现应提供一个向 BeanFactory 注册的子类，并重写 <code>match(MetadataReader, MetadataReaderFactory)</code>
+        方法。它们还应该实现一个有效的 <code>hashCode</code> 和 <code>equals</code> 方法，以便可以将它们用作Spring测试的应用程序上下文缓存的一部分。
+    </p>
+    <p>注意，<code>TypeExcludeFilters</code> 在应用程序生命周期的很早就初始化了，它们通常不应该依赖于任何其他bean。它们主要在内部用于支持
+        <code>spring-boot-test</code> 。</p>
+</blockquote>
+<p>
+    从文档注释中大概能看出来，它是给了一种扩展机制，能让我们<strong>向IOC容器中注册一些自定义的组件过滤器，以在包扫描的过程中过滤它们</strong>。
+</p>
+<p>这种Filter的核心方法是 <code>match</code> 方法，它实现了过滤的判断逻辑：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span
+        class="hljs-keyword">boolean</span> <span class="hljs-title">match</span><span class="hljs-params">(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)</span>
+        <span class="hljs-keyword">throws</span> IOException </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.beanFactory <span class="hljs-keyword">instanceof</span> ListableBeanFactory &amp;&amp; getClass() == TypeExcludeFilter.class) {
+        Collection&lt;TypeExcludeFilter&gt; delegates = ((ListableBeanFactory) <span class="hljs-keyword">this</span>.beanFactory)
+                .getBeansOfType(TypeExcludeFilter.class).values();
+        <span class="hljs-keyword">for</span> (TypeExcludeFilter delegate : delegates) {
+            <span class="hljs-keyword">if</span> (delegate.match(metadataReader, metadataReaderFactory)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+}
+</code></pre><p>注意看if结构体中的第一句，它会从 <code>BeanFactory</code> （可以暂时理解成IOC容器）中获取所有类型为 <code>TypeExcludeFilter</code>
+    的组件，去执行自定义的过滤方法。</p>
+<p>由此可见，<code>TypeExcludeFilter</code> 的作用是做<strong>扩展的组件过滤</strong>。</p>
+<h3 class="heading">3.2 AutoConfigurationExcludeFilter</h3>
+<p>看这个类名，总感觉跟自动配置相关，还是看一眼它的源码：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span
+        class="hljs-keyword">boolean</span> <span class="hljs-title">match</span><span class="hljs-params">(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)</span>
+        <span class="hljs-keyword">throws</span> IOException </span>{
+    <span class="hljs-keyword">return</span> isConfiguration(metadataReader) &amp;&amp; isAutoConfiguration(metadataReader);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span
+        class="hljs-title">isConfiguration</span><span
+        class="hljs-params">(MetadataReader metadataReader)</span> </span>{
+    <span class="hljs-keyword">return</span> metadataReader.getAnnotationMetadata().isAnnotated(Configuration.class.getName());
+}
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span
+        class="hljs-title">isAutoConfiguration</span><span
+        class="hljs-params">(MetadataReader metadataReader)</span> </span>{
+    <span class="hljs-keyword">return</span> getAutoConfigurations().contains(metadataReader.getClassMetadata().getClassName());
+}
+
+<span class="hljs-function"><span class="hljs-keyword">protected</span> List&lt;String&gt; <span class="hljs-title">getAutoConfigurations</span><span
+        class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.autoConfigurations == <span
+            class="hljs-keyword">null</span>) {
+        <span class="hljs-keyword">this</span>.autoConfigurations = SpringFactoriesLoader.loadFactoryNames(EnableAutoConfiguration.class,
+                <span class="hljs-keyword">this</span>.beanClassLoader);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.autoConfigurations;
+}
+</code></pre><p>它的 <code>match</code> 方法要判断两个部分：<strong>是否是一个配置类，是否是一个自动配置类</strong>。其实光从方法名上也就看出来了，下面的方法是其调用实现，里面有一个很关键的机制：<code>SpringFactoriesLoader.loadFactoryNames</code>，我们留到第5篇再解释。
+</p>
+<h2 class="heading">4. @SpringBootConfiguration</h2>
+<pre><code class="hljs java" lang="java"><span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> SpringBootConfiguration
+</code></pre><p>文档注释原文翻译：</p>
+<blockquote>
+    <p>Indicates that a class provides Spring Boot application <code>@Configuration</code> . Can be used as an
+        alternative to the Spring's standard <code>@Configuration</code> annotation so that configuration can be found
+        automatically (for example in tests).</p>
+    <p>Application should only ever include <em>one</em> <code>@SpringBootConfiguration</code> and most idiomatic Spring
+        Boot applications will inherit it from <code>@SpringBootApplication</code>.</p>
+    <p>标识一个类作为 SpringBoot 的配置类，它可以是Spring原生的 <code>@Configuration</code> 的一种替换方案，目的是这个配置可以被自动发现。
+    </p>
+    <p>应用应当只在主启动类上标注 <code>@SpringBootConfiguration</code>，大多数情况下都是直接使用 <code>@SpringBootApplication</code>。
+    </p>
+</blockquote>
+<p>从文档注释以及它的声明上可以看出，它被 <code>@Configuration</code> 标注，说明它实际上是标注配置类的，而且是标注主启动类的。
+</p>
+<p>【如果小伙伴没太有接触过 <code>@Configuration</code> 的使用，请继续往下看；熟悉的小伙伴请直接跳过4.1节】</p>
+<h3 class="heading">4.1 @Configuration的作用</h3>
+<p>被 <code>@Configuration</code> 标注的类，会被 Spring 的IOC容器认定为配置类。</p>
+<p>一个被 <code>@Configuration</code> 标注的类，相当于一个 <code>applicationContext.xml</code> 的配置文件。</p>
+<p>例如：声明一个类，并标注 <code>@Configuration</code> 注解：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span
+            class="hljs-title">ConfigurationDemo</span> </span>{
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Date <span
+            class="hljs-title">currentDate</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Date();
+    }
+}
+</code></pre>
+<blockquote>
+    <p>上述注册Bean的方式类比于xml：</p>
+    <pre><code class="hljs xml" lang="xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span
+            class="hljs-attr">id</span>=<span class="hljs-string">"currentDate"</span> <span
+            class="hljs-attr">class</span>=<span class="hljs-string">"java.util.Date"</span>/&gt;</span>
+</code></pre>
+</blockquote>
+<p>之后使用注解启动方式，初始化一个IOC容器，并打印IOC容器中的所有bean的name：</p>
+<pre><code class="hljs java" lang="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span
+        class="hljs-keyword">class</span> <span class="hljs-title">MainApp</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span
+            class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span
+            class="hljs-keyword">throws</span> Exception </span>{
+        AnnotationConfigApplicationContext ctx = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext(ConfigurationDemo.class);
+        String[] beanDefinitionNames = ctx.getBeanDefinitionNames();
+        Stream.of(beanDefinitionNames).forEach(System.out::println);
+    }
+}
+</code></pre><p>输出结果：</p>
+<pre><code class="hljs java" lang="java">org.springframework.context.annotation.internalConfigurationAnnotationProcessor
+org.springframework.context.annotation.internalAutowiredAnnotationProcessor
+org.springframework.context.annotation.internalCommonAnnotationProcessor
+org.springframework.context.event.internalEventListenerProcessor
+org.springframework.context.event.internalEventListenerFactory
+configurationDemo
+currentDate
+</code></pre><p>可以发现组件，以及配置类本身被成功加载。</p>
+<h3 class="heading">4.2 @SpringBootConfiguration的附加作用</h3>
+<p>借助IDEA搜索 <code>@SpringBootConfiguration</code> 的出现位置，发现除了 <code>@SpringBootApplication</code>
+    外，只有一个位置使用了它：</p>
+<p></p>
+<figure><img
+        src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/10/16/16dd229a7d0bbe86~tplv-t2oaga2asx-image.image">
+    <figcaption></figcaption>
+</figure><p></p>
+<p>发现是一个测试包中的usage（默认的 <code>SpringInitializer</code> 会把 <code>spring-boot-starter-test</code>
+    一起带进来，故可以搜到这个usage。如果小伙伴手动使用Maven创建 SpringBoot 应用且没有导入
+    <code>spring-boot-start-test</code> 依赖，则这个usage都不会搜到）。</p>
+<p>它的作用我们不剖析源码了（毕竟作为刚开始就看那么复杂的东西属实是会把你吓跑），我们来翻看 SpringBoot 的官方文档，发现通篇只有两个位置提到了
+    <code>@SpringBootConfiguration</code>，还真有一个跟测试相关：</p>
+<p><a target="_blank"
+      href="https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-testing-spring-boot-applications-detecting-config">https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/htmlsingle/#boot-features-testing-spring-boot-applications-detecting-config</a>
+</p>
+<p>第三段中有对 <code>@SpringBootConfiguration</code> 的描述：</p>
+<blockquote>
+    <p>The search algorithm works up from the package that contains the test until it finds a class annotated with
+        <code>@SpringBootApplication</code> or <code>@SpringBootConfiguration</code>. As long as you structured your
+        code in a sensible way, your main configuration is usually found.</p>
+    <p>搜索算法从包含测试的程序包开始工作，直到找到带有 <code>@SpringBootApplication</code> 或 <code>@SpringBootConfiguration</code>
+        标注的类。只要您以合理的方式对代码进行结构化，通常就可以找到您的主要配置。</p>
+</blockquote>
+<p>这很明显是解释了 SpringBoot 主启动类与测试的关系，标注 <code>@SpringBootApplication</code> 或 <code>@SpringBootConfiguration</code>
+    的主启动类会被 Spring测试框架 的搜索算法找到。回过头看上面的截图，引用 <code>@SpringBootConfiguration</code> 的方法恰好叫
+    <strong>getOrFindConfigurationClasses</strong>，与文档一致。</p>
+<p>至此，<code>@SpringBootConfiguration</code> 的作用解析完毕。</p>
+<h2 class="heading">小结</h2>
+<ol>
+    <li><code>@SpringBootApplication</code> 是组合注解。</li>
+    <li><code>@ComponentScan</code> 默认扫描当前配置类所在包及子包下的所有组件， <code>exclude</code> 属性会将主启动类、自动配置类屏蔽掉。
+    </li>
+    <li><code>@Configuration</code> 可标注配置类，<code>@SpringBootConfiguration</code> 并没有对其做实质性扩展。</li>
+</ol>
+<p>【<code>@EnableAutoConfiguration</code> 的作用篇幅较长，单独成篇。小伙伴最好一步一个脚印，确保前面的已经记扎实，再继续往后学习】
+</p>

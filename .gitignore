@@ -35,6 +35,6 @@ logs/
 *.log
 
 */jsoup/
-/src/main/java/com/practice/domain/jsoup/*
+/src/main/java/com/rainbow/practice/domain/jsoup/*
 
 application-local.yml
