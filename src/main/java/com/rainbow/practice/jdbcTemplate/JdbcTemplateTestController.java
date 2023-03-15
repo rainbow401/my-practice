@@ -1,6 +1,6 @@
 package com.rainbow.practice.jdbcTemplate;
 
-import com.rainbow.practice.auth.model.User;
+import com.rainbow.practice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
