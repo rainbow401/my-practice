@@ -1,6 +1,8 @@
 package com.rainbow.practice.proxy;
 
-class DemoImpl implements Demo {
+import com.rainbow.practice.proxy.Demo;
+
+public class DemoImpl implements Demo {
 
     @Override
     public void say() {

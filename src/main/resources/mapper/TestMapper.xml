@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rainbow.practice.auth.mapper.TestMapper">
+<mapper namespace="com.rainbow.practice.typehandler.mapper.TestMapper">
 
-    <resultMap id="BaseResultMap" type="com.rainbow.practice.auth.entity.Test">
+    <resultMap id="BaseResultMap" type="com.rainbow.practice.typehandler.Test">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="data" column="data" typeHandler="com.rainbow.practice.typehandler.JsonArrayToListTypeHandler"/>
+            <result property="data" column="data" typeHandler="com.rainbow.practice.typehandler.BelongCompanyTypeHandler"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -20,6 +20,6 @@
     </select>
 
     <update id="updateData">
-        update test set data = #{data, typeHandler=com.rainbow.practice.typehandler.JsonArrayToListTypeHandler}
+        update test set data = #{data, typeHandler=com.rainbow.practice.typehandler.BelongCompanyTypeHandler}
     </update>
 </mapper>

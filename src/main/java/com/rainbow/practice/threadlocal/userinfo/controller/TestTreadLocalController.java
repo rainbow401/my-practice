@@ -1,6 +1,6 @@
 package com.rainbow.practice.threadlocal.userinfo.controller;
 
-import com.rainbow.practice.Test;
+import com.rainbow.practice.threadlocal.userinfo.Test;
 import com.rainbow.practice.threadlocal.userinfo.annotation.InjectUser;
 import com.rainbow.practice.threadlocal.userinfo.context.ServiceContext;
 import com.rainbow.practice.threadlocal.userinfo.context.UserInfo;

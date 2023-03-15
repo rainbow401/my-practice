@@ -1,9 +1,8 @@
 package com.rainbow.practice.ticket;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rainbow.practice.auth.entity.TicketTel;
-import com.rainbow.practice.auth.mapper.ClientMapper;
-import com.rainbow.practice.auth.mapper.TicketTelMapper;
+import com.rainbow.practice.ticket.mapper.ClientMapper;
+import com.rainbow.practice.ticket.mapper.TicketTelMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;

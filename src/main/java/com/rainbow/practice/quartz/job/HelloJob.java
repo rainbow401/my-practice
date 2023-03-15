@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 public class HelloJob implements Job {
 
-    @SneakyThrows
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         System.out.println("---------------------------------------");

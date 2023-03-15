@@ -3,7 +3,7 @@ package com.rainbow.practice.tree.province;
 import com.alibaba.fastjson.JSONObject;
 import com.rainbow.practice.test.JsonUtil;
 import com.rainbow.practice.tree.Node;
-import com.rainbow.practice.tree.TreeUtil;
+import com.rainbow.practice.tree.TreeUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +18,8 @@ public class TestDemo {
     public static void main(String[] args) throws IOException {
         String path = "src/main/java/com/practice/tree/province/dataList.json";
         List<CityEntity> list = JsonUtil.getListByFile(path, CityEntity.class);
-        TreeUtil treeUtil = new TreeUtil();
-        List<Node<String>> treeByMap = treeUtil.getTreeByMap(list);
+        TreeUtils treeUtils = new TreeUtils();
+        List<Node<String>> treeByMap = treeUtils.getTreeByMap(list);
         System.out.println(list);
         System.out.println(treeByMap);
         path = "src/main/java/com/practice/tree/province/result.json";

@@ -1,6 +1,7 @@
 package com.rainbow.practice.algorithm.search.erfen;
 
 /**
+ * 二分查找算法
  * @author yanzhihao
  */
 public class ErFenSearch {
