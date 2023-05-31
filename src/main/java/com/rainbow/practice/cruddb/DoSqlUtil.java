@@ -3,11 +3,7 @@ package com.rainbow.practice.cruddb;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * 获取mysql连接，并执行sql获取返回值
@@ -17,16 +13,16 @@ import java.sql.Statement;
 public class DoSqlUtil {
 
     private final String driver = "com.mysql.jdbc.Driver";
-    private final String url = "jdbc:mysql://";
-    private final String user = "";
-    private final String pwd = "";
+    private final String url = "jdbc:mysql://localhost:3306/blog";
+    private final String user = "root";
+    private final String pwd = "123456";
 
     public void getJsonArray() throws Exception {
         Class.forName(driver);
         Connection con = DriverManager.getConnection(url, user, pwd);
         Statement stet = con.createStatement();
 
-        String sql = "select * from table";
+        String sql = "show full columns from user1";
         ResultSet rs = stet.executeQuery(sql);
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -42,5 +38,10 @@ public class DoSqlUtil {
         }
         System.out.println("转换JSON数据：");
         System.out.println(array.toString());
+    }
+
+    public static void main(String[] args) throws Exception {
+        DoSqlUtil doSqlUtil= new DoSqlUtil();
+        doSqlUtil.getJsonArray();
     }
 }
