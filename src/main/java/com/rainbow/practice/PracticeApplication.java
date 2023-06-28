@@ -11,9 +11,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class PracticeApplication {
 
-//    @Autowired
-//    private CustomConfig customConfig;
-
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(PracticeApplication.class, args);
     }
