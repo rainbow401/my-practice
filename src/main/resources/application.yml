@@ -6,7 +6,7 @@ spring:
     host: smtp.qq.com # 配置 smtp 服务器地址
     port: 587 # smtp 服务器的端口
     username: 273697776@qq.com # 配置邮箱用户名(你的邮箱地址)
-    password: rcgbtpjiuljacafa    # 配置申请到的授权码(刚让复制的授权码)
+    password: 13221312    # 配置申请到的授权码(刚让复制的授权码)
     default-encoding: UTF-8 # 配置邮件编码
     properties:
       mail:
