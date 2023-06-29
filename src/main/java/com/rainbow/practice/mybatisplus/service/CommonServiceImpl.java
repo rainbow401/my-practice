@@ -21,9 +21,9 @@ public class CommonServiceImpl extends ServiceImpl<CommonMapper, Demo> implement
     public void test() {
         log.info("test");
         ArrayList<Demo> objects = new ArrayList<>();
-        objects.add(new Demo(1L));
-        objects.add(new Demo(2L));
+        objects.add(new Demo(1L, "4"));
+        objects.add(new Demo(2L, "5"));
 
-        this.updateBatchById(objects);
+        this.removeById(1L);
     }
 }
