@@ -1,8 +1,8 @@
-package com.rainbow.practice.mybatisplus.service;
+package com.rainbow.practice.mybatisplus.autofill.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rainbow.practice.mybatisplus.mapper.CommonMapper;
-import com.rainbow.practice.mybatisplus.model.Demo;
+import com.rainbow.practice.mybatisplus.autofill.mapper.CommonMapper;
+import com.rainbow.practice.mybatisplus.autofill.model.Demo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

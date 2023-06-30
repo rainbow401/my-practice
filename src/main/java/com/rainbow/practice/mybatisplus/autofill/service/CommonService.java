@@ -1,4 +1,4 @@
-package com.rainbow.practice.mybatisplus.service;
+package com.rainbow.practice.mybatisplus.autofill.service;
 
 /**
  * @author yanzhihao

@@ -1,4 +1,4 @@
-package com.rainbow.practice.mybatisplus.model;
+package com.rainbow.practice.mybatisplus.autofill.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
