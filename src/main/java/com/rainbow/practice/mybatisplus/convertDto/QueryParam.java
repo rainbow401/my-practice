@@ -1,8 +1,10 @@
 package com.rainbow.practice.mybatisplus.convertDto;
 
 public class QueryParam {
+
         private String filed;
         private String expr;
+        private String value;
 
         public String getFiled() {
             return filed;
@@ -12,7 +14,15 @@ public class QueryParam {
             this.filed = filed;
         }
 
-        public String getExpr() {
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getExpr() {
             return expr;
         }
 
