@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * @Author: yzh
@@ -31,7 +32,7 @@ public class Parse {
 
         // 将JSON数据转换为GraphObject数组
         Base[] bases = objectMapper.readValue(new File(PATH), Base[].class);
-        System.out.println("bases = " + bases);
+        System.out.println("bases = " + Arrays.toString(bases));
 
     }
 }
