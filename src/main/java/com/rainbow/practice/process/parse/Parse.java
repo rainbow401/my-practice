@@ -2,10 +2,6 @@ package com.rainbow.practice.process.parse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rainbow.practice.process.model.Activity;
-import com.rainbow.practice.process.model.Base;
-import com.rainbow.practice.process.model.Edge;
-import com.rainbow.practice.process.model.Event;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
