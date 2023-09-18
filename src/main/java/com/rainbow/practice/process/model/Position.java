@@ -1,5 +1,7 @@
 package com.rainbow.practice.process.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -13,7 +15,8 @@ public class Position {
 
     private Float y;
 
-    public Position(Float x, Float y) {
+    @JsonCreator
+    public Position(@JsonProperty("x") Float x, @JsonProperty("y") Float y) {
         this.x = x;
         this.y = y;
     }

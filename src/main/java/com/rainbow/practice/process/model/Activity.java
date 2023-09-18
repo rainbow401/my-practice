@@ -1,15 +1,30 @@
 package com.rainbow.practice.process.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /**
  * @Author: yzh
  * @Date: 2023/9/18
  * @Description:
  */
+@JsonTypeName("activity")
 public class Activity extends BaseWithPosition{
 
     private String label;
 
-    public Activity(String id, BaseType baseType, Position position) {
-        super(id, baseType, position);
+    @JsonCreator
+    public Activity(@JsonProperty("id") String id,@JsonProperty("position") Position position,@JsonProperty("label") String label) {
+        super(id, BaseType.ACTIVITY, position);
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

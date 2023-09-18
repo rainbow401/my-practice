@@ -9,7 +9,8 @@ public enum BaseType {
 
     EVENT(1, "事件"),
     GATEWAY(2, "网关"),
-    EDGE(3, "连线");
+    EDGE(3, "连线"),
+    ACTIVITY(4, "节点");
 
 
     private final Integer type;
