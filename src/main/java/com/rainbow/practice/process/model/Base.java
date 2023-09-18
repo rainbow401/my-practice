@@ -1,6 +1,7 @@
 package com.rainbow.practice.process.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -9,16 +10,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @Date: 2023/9/18
  * @Description:
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "shape")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "shape")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Event.class, name = "event"),
         @JsonSubTypes.Type(value = Activity.class, name = "activity"),
         @JsonSubTypes.Type(value = Edge.class, name = "bpmn-edge"),
         @JsonSubTypes.Type(value = Gateway.class, name = "gateway"),
 })
-@JsonIgnoreProperties({"width", "height", "shape", "attrs"})
 public class Base {
 
+    @JsonProperty("id")
     private String id;
 
     private BaseType baseType;
@@ -38,6 +39,14 @@ public class Base {
 
     public BaseType getBaseType() {
         return baseType;
+    }
+
+    @Override
+    public String toString() {
+        return "Base{" +
+                "id='" + id + '\'' +
+                ", baseType=" + baseType +
+                '}';
     }
 
     public void setBaseType(BaseType baseType) {

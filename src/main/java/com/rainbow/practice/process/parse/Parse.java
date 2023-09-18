@@ -1,7 +1,9 @@
 package com.rainbow.practice.process.parse;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rainbow.practice.process.model.Base;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -25,9 +27,11 @@ public class Parse {
                 new File(PATH),
                 StandardCharsets.UTF_8);
         System.out.println("s = " + jsonStr);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // 将JSON数据转换为GraphObject数组
-        JsonNode jsonNode = objectMapper.readTree(new File(PATH));
+        Base[] bases = objectMapper.readValue(new File(PATH), Base[].class);
+        System.out.println("bases = " + bases);
 
     }
 }

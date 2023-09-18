@@ -1,16 +1,13 @@
 package com.rainbow.practice.process.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.*;
 
 /**
  * @Author: yzh
  * @Date: 2023/9/18
  * @Description:
  */
-@JsonTypeName("event")
+//@JsonTypeName("event")
 public class Event extends BaseWithPosition{
 
     @JsonCreator
