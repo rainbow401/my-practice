@@ -1,21 +1,5 @@
 {
     "configurations": [
         
-        {
-        "name": "Build",
-        "type": "jps-build",
-        "workingDir": "$PROJECT_DIR$",
-        "module": "my-practice",
-        "includeTests": false,
-        },
-        {
-        "name": "PracticeApplication",
-        "type": "jps-run",
-        "workingDir": "$PROJECT_DIR$",
-        "dependsOn": ["Build"],
-        "mainClass": "com.rainbow.practice.PracticeApplication",
-        "module": "my-practice",
-            "options": ["-XX:TieredStopAtLevel=1","-noverify","-Dspring.output.ansi.enabled=always","-Dcom.sun.management.jmxremote","-Dspring.jmx.enabled=true","-Dspring.liveBeansView.mbeanDomain","-Dspring.application.admin.enabled=true","-Dmanagement.endpoints.jmx.exposure.include=*","-Dfile.encoding=UTF-8","-classpath","C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\deploy.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\access-bridge-64.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\cldrdata.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\dnsns.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\jaccess.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\jfxrt.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\localedata.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\nashorn.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\sunec.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\sunjce_provider.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\sunmscapi.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\sunpkcs11.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\ext\\zipfs.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\javaws.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\jfxswt.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\management-agent.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\plugin.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_101\\jre\\lib\\rt.jar;C:\\Users\\lenovo\\.m2\\repository\\com\\alibaba\\cloud\\spring-cloud-alibaba-commons\\2021.1\\spring-cloud-alibaba-commons-2021.1.jar"],
-    }
-    ],
+    ]
 }
