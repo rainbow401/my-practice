@@ -5,13 +5,18 @@ import com.rainbow.practice.process.model.Base;
 
 /**
  * @Author: yzh
- * @Date: 2023/9/18
+ * @Date: 2023/9/19
  * @Description:
  */
-public class EdgeParseService  implements ParseNodeStrategy{
+public class BaseConvert implements NodeConvert{
 
     @Override
     public Base parse(JsonNode node) {
+        return null;
+    }
+
+    @Override
+    public String getSupportType() {
         return null;
     }
 }

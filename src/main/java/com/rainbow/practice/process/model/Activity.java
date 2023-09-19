@@ -1,8 +1,5 @@
 package com.rainbow.practice.process.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.ToString;
 
 /**
@@ -11,14 +8,17 @@ import lombok.ToString;
  * @Description:
  */
 @ToString
-@JsonTypeName("activity")
 public class Activity extends BaseWithPosition{
 
     private String label;
 
-    @JsonCreator
-    public Activity(@JsonProperty("id") String id,@JsonProperty("position") Position position,@JsonProperty("label") String label) {
+    public Activity(String id, Position position, String label) {
         super(id, BaseType.ACTIVITY, position);
+        this.label = label;
+    }
+
+    public Activity(BaseWithPosition baseWithPosition, String label) {
+        super(baseWithPosition.getId(), BaseType.ACTIVITY, baseWithPosition.getPosition());
         this.label = label;
     }
 

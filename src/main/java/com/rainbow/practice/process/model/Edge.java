@@ -1,8 +1,5 @@
 package com.rainbow.practice.process.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.ToString;
 
 /**
@@ -11,16 +8,20 @@ import lombok.ToString;
  * @Description:
  */
 @ToString
-@JsonTypeName("bpmn-edge")
 public class Edge extends Base {
 
     private String source;
 
     private String target;
 
-    @JsonCreator
-    public Edge(@JsonProperty("id") String id, @JsonProperty("source") String source, @JsonProperty("target") String target) {
+    public Edge(String id, String source, String target) {
         super(id, BaseType.EDGE);
+        this.source = source;
+        this.target = target;
+    }
+
+    public Edge(Base base, String source, String target) {
+        super(base.getId(), BaseType.EDGE);
         this.source = source;
         this.target = target;
     }

@@ -1,39 +1,37 @@
 package com.rainbow.practice.process.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.ToString;
 
 /**
  * @Author: yzh
  * @Date: 2023/9/18
  * @Description:
  */
+@ToString
 public class Position {
 
-    private Float x;
+    private Double x;
 
-    private Float y;
+    private Double y;
 
-    @JsonCreator
-    public Position(@JsonProperty("x") Float x, @JsonProperty("y") Float y) {
+    public Position(Double x, Double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Float getX() {
+    public Double getX() {
         return x;
     }
 
-    public void setX(Float x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public Float getY() {
+    public Double getY() {
         return y;
     }
 
-    public void setY(Float y) {
+    public void setY(Double y) {
         this.y = y;
     }
 }

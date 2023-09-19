@@ -1,8 +1,6 @@
 package com.rainbow.practice.process.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.ToString;
 
 /**
@@ -11,13 +9,11 @@ import lombok.ToString;
  * @Description:
  */
 @ToString
-@JsonTypeName("gateway")
 public class Gateway extends BaseWithPosition{
 
     private GatewayType gatewayType;
 
-    @JsonCreator
-    public Gateway(@JsonProperty("id")String id, @JsonProperty("position") Position position) {
+    public Gateway(String id, Position position) {
         super(id, BaseType.GATEWAY, position);
     }
 
@@ -25,6 +21,12 @@ public class Gateway extends BaseWithPosition{
         super(id, BaseType.GATEWAY, position);
         this.gatewayType = gatewayType;
     }
+
+    public Gateway(BaseWithPosition baseWithPosition, GatewayType gatewayType) {
+        super(baseWithPosition.getId(), BaseType.GATEWAY, baseWithPosition.getPosition());
+        this.gatewayType = gatewayType;
+    }
+
 
     public GatewayType getGatewayType() {
         return gatewayType;
