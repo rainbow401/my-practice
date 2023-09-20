@@ -2,6 +2,7 @@ package com.rainbow.practice.tree.province;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.rainbow.practice.tree.Node;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -10,8 +11,9 @@ import java.util.List;
  * @date 2023/1/9
  * @Description 城市
  */
+@ToString
 @JsonView(CityEntity.View.class)
-public class CityEntity implements Node<String> {
+public class CityEntity implements Node<String, CityEntity> {
     private String province;
 
     private String abbreviate;
@@ -20,7 +22,7 @@ public class CityEntity implements Node<String> {
 
     private String code;
 
-    private List<Node<String>> children;
+    private List<CityEntity> children;
 
     private String parentCode;
 
@@ -36,23 +38,16 @@ public class CityEntity implements Node<String> {
         return parentCode;
     }
 
-    public List<Node<String>> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Node<String>> children) {
-        this.children = children;
-    }
-
     @Override
-    public List<Node<String>> getChild() {
+    public List<CityEntity> getChild() {
         return children;
     }
 
     @Override
-    public void setChild(List<Node<String>> child) {
+    public void setChild(List<CityEntity> child) {
         this.children = child;
     }
+
 
     public String getProvince() {
         return province;

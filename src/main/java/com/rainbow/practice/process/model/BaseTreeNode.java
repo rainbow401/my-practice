@@ -14,26 +14,10 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class BaseTreeNode implements Node<String, BaseTreeNode> {
+public class BaseTreeNode implements Node<String, Base> {
 
     private String id;
     private String parentId;
-    private List<BaseTreeNode> child;
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getParentId() {
-        return parentId;
-    }
-
-    @Override
-    public void setChild(List<BaseTreeNode> child) {
-
-    }
-
+    private List<Base> child;
 
 }

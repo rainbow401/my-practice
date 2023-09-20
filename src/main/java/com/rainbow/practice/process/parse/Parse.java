@@ -1,23 +1,15 @@
 package com.rainbow.practice.process.parse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.rainbow.practice.process.model.Base;
-import com.rainbow.practice.process.model.BaseTreeNode;
-import com.rainbow.practice.process.model.Gateway;
+import com.rainbow.practice.process.model.BaseType;
+import com.rainbow.practice.process.model.Edge;
+import com.rainbow.practice.tree.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: yzh
@@ -27,11 +19,13 @@ import java.util.List;
 @Slf4j
 public class Parse {
 
-    private static final String PATH = "C:\\project\\my-practice\\src\\main\\java\\com\\rainbow\\practice\\process\\testdata\\data.json";
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final ObjectWriter prettyPrinter = objectMapper.writerWithDefaultPrettyPrinter();
+
     private static final HashMap<String, NodeConvert> convertMap = new HashMap<>();
+
+    private Base root;
 
     static {
 
@@ -46,6 +40,14 @@ public class Parse {
         convertMap.put(edgeConvert.getSupportType(), edgeConvert);
         convertMap.put(eventConvert.getSupportType(), eventConvert);
         convertMap.put(gatewayConvert.getSupportType(), gatewayConvert);
+    }
+
+    public void setRoot(Base ROOT) {
+        this.root = ROOT;
+    }
+
+    public Base getRoot() {
+        return root;
     }
 
     public static List<Base> parse(String jsonStr) throws JsonProcessingException {
@@ -75,14 +77,31 @@ public class Parse {
         return baseList;
     }
 
-    public BaseTreeNode parseTree(List<Base> data) {
+    public void parseTreeRoot(List<Base> data) throws JsonProcessingException {
 
+        Map<String, Base> dataMap = new HashMap<>();
+        List<Base> edges = new ArrayList<>();
+        for (Base e : data) {
+            BaseType baseType = e.getBaseType();
+            if (Objects.equals(baseType, BaseType.EDGE)) {
+                edges.add(e);
+            } else {
+                dataMap.put(e.getId(), e);
+            }
+        }
 
-        return null;
-    }
+        for (Base e : edges) {
+            Edge edge= (Edge) e;
+            String parentId = edge.getSource();
+            String childId = edge.getTarget();
 
-    public static void main(String[] args) throws IOException {
-        String s = FileUtils.readFileToString(new File(PATH));
-        parse(s);
+            Base base = dataMap.get(childId);
+            base.setParentId(parentId);
+        }
+
+        Base root = TreeUtils.getTreeRoot(new ArrayList<>(dataMap.values()));
+        log.debug("root: {}", objectMapper.writeValueAsString(root));
+
+        setRoot(root);
     }
 }

@@ -14,7 +14,7 @@ public class TestDemo {
         String path = "src/main/java/com/practice/tree/data.json";
         List<CommonNode> list = JsonUtil.getListByFile(path, CommonNode.class);
         TreeUtils treeUtils = new TreeUtils();
-        List<Node<Integer>> treeByMap = treeUtils.getTreeByMap(list);
+        List<CommonNode> treeByMap = treeUtils.getTreeByMap(list);
         System.out.println(list);
         System.out.println(treeByMap);
     }

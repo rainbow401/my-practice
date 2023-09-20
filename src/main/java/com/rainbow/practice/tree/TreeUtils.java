@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TreeUtils {
 
-    private <T> List<? extends Node<T>> sortNode(List<? extends Node<T>> nodes, Comparator<Node<T>> comparator) {
+    private <T, R extends Node<T, R>> List<R> sortNode(List<R> nodes, Comparator<R> comparator) {
         nodes.sort(comparator);
         return nodes;
     }
@@ -19,12 +19,12 @@ public class TreeUtils {
     /**
      * 借助HashMap完成查询
      */
-    public <T> List<Node<T>> getTreeByMap(List<? extends Node<T>> nodes) {
-        List<Node<T>> resultList = new ArrayList<>();
-        List<Node<T>> rootList = new ArrayList<>();
-        HashMap<T, List<Node<T>>> childMap = new HashMap<>(48);
+    public static <T, R extends Node<T, R>> List<R> getTreeByMap(List<R> nodes) {
+        List<R> resultList = new ArrayList<>();
+        List<R> rootList = new ArrayList<>();
+        HashMap<T, List<R>> childMap = new HashMap<>(48);
 
-        for (Node<T> node : nodes) {
+        for (R node : nodes) {
             T parentId = node.getParentId();
             if (parentId == null) {
                 rootList.add(node);
@@ -33,9 +33,9 @@ public class TreeUtils {
             }
         }
 
-        for (Node<T> rootNode : rootList) {
+        for (R rootNode : rootList) {
             T id = rootNode.getId();
-            List<Node<T>> childNode = getChildrenList(id, childMap);
+            List<R> childNode = getChildrenList(id, childMap);
             rootNode.setChild(childNode);
             resultList.add(rootNode);
         }
@@ -43,16 +43,26 @@ public class TreeUtils {
         return resultList;
     }
 
-    private <T> List<Node<T>> getChildrenList(T id, HashMap<T, List<Node<T>>> childMap) {
-        List<Node<T>> result = new ArrayList<>();
-        List<Node<T>> childList = childMap.get(id);
+    public static <T, R extends Node<T, R>> R getTreeRoot(List<R> nodes) {
+        List<R> nodeList = getTreeByMap(nodes);
+
+        if (nodeList.size() != 1) {
+            throw new IllegalStateException("The number of root is " + nodeList.size());
+        }
+
+        return nodeList.get(0);
+    }
+
+    private static <T, R extends Node<T, R>> List<R> getChildrenList(T id, HashMap<T, List<R>> childMap) {
+        List<R> result = new ArrayList<>();
+        List<R> childList = childMap.get(id);
         if (childList == null) {
             return null;
         }
 
-        for (Node<T> node : childList) {
+        for (R node : childList) {
             T nodeId = node.getId();
-            List<Node<T>> nodeChild = getChildrenList(nodeId, childMap);
+            List<R> nodeChild = getChildrenList(nodeId, childMap);
             if (nodeChild != null) {
                 node.setChild(nodeChild);
             }

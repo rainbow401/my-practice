@@ -8,7 +8,7 @@ import java.util.List;
  * 树节点信息
  * @author yanzhihao
  */
-public interface Node<T> {
+public interface Node<T, R extends Node<T, R>> {
 
     /**
      * 获取节点的id
@@ -29,13 +29,13 @@ public interface Node<T> {
      * @return 子节点数据
      */
     @JsonView(Node.View.class)
-    List<Node<T>> getChild();
+    List<R> getChild();
 
     /**
      * 设置子节点数据
      * @param child 数据
      */
-    void setChild(List<Node<T>> child);
+    void setChild(List<R> child);
 
     public interface View {}
 }

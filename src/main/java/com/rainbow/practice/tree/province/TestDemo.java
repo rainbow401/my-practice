@@ -16,13 +16,13 @@ import java.util.List;
 public class TestDemo {
 
     public static void main(String[] args) throws IOException {
-        String path = "src/main/java/com/practice/tree/province/dataList.json";
+        String path = "C:\\project\\my-practice\\src\\main\\java\\com\\rainbow\\practice\\tree\\province\\dataList.json";
         List<CityEntity> list = JsonUtil.getListByFile(path, CityEntity.class);
         TreeUtils treeUtils = new TreeUtils();
-        List<Node<String>> treeByMap = treeUtils.getTreeByMap(list);
+        List<CityEntity> treeByMap = treeUtils.getTreeByMap(list);
         System.out.println(list);
         System.out.println(treeByMap);
-        path = "src/main/java/com/practice/tree/province/result.json";
+        path = "C:\\project\\my-practice\\src\\main\\java\\com\\rainbow\\practice\\tree\\province\\result.json";
         JsonUtil.appendJsonStringToFile(path, JSONObject.toJSONString(treeByMap, true), 1);
     }
 

@@ -1,11 +1,21 @@
 package com.rainbow.practice.process.model;
 
+import com.rainbow.practice.tree.Node;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
 /**
  * @Author: yzh
  * @Date: 2023/9/18
  * @Description:
  */
-public class Base extends BaseTreeNode{
+@Getter
+@Setter
+@ToString
+public class Base extends BaseTreeNode {
 
     private String id;
 
@@ -26,14 +36,6 @@ public class Base extends BaseTreeNode{
 
     public BaseType getBaseType() {
         return baseType;
-    }
-
-    @Override
-    public String toString() {
-        return "Base{" +
-                "id='" + id + '\'' +
-                ", baseType=" + baseType +
-                '}';
     }
 
     public void setBaseType(BaseType baseType) {

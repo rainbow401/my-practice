@@ -1,6 +1,7 @@
 package com.rainbow.practice.tree;
 
 import lombok.ToString;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author yanzhihao
  */
 @ToString
-public class CommonNode implements Node<Integer> {
+public class CommonNode implements Node<Integer, CommonNode> {
 
     private Integer id;
 
@@ -17,7 +18,7 @@ public class CommonNode implements Node<Integer> {
 
     private String data;
 
-    private List<Node<Integer>> child;
+    private List<CommonNode> child;
 
 
     @Override
@@ -31,14 +32,15 @@ public class CommonNode implements Node<Integer> {
     }
 
     @Override
-    public List<Node<Integer>> getChild() {
+    public List<CommonNode> getChild() {
         return child;
     }
 
     @Override
-    public void setChild(List<Node<Integer>> child) {
+    public void setChild(List<CommonNode> child) {
         this.child = child;
     }
+
 
     public void setId(Integer id) {
         this.id = id;
