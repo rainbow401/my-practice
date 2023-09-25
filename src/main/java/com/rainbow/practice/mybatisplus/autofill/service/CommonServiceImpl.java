@@ -16,7 +16,9 @@ import java.util.ArrayList;
 @Service
 public class CommonServiceImpl extends ServiceImpl<CommonMapper, Demo> implements CommonService {
 
-
+    /**
+     *
+     */
     @Override
     public void test() {
         log.info("test");
