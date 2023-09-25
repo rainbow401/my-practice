@@ -56,15 +56,20 @@ public class Parse {
         for (JsonNode node : jsonNode) {
             log.debug("node: {}", node);
 
-            String shape = node.get("shape").asText();
+            JsonNode shapeJson = node.get("shape");
+            if (shapeJson == null) {
+                throw new IllegalStateException("field 'shape' is missing");
+            }
+
+            String shape = shapeJson.asText();
             if (StringUtils.isBlank(shape)) {
-                log.info("shape is blank");
+                log.error("shape is blank");
                 continue;
             }
 
             NodeConvert convert = convertMap.get(shape);
             if (convert == null) {
-                log.error("convert is null");
+                log.error("no suitable convert");
                 continue;
             }
 
@@ -99,7 +104,7 @@ public class Parse {
             base.setParentId(parentId);
         }
 
-        Base root = TreeUtils.getTreeRoot(new ArrayList<>(dataMap.values()));
+        Base root = TreeUtils.getTreeRoot(dataMap.values());
         log.debug("root: {}", objectMapper.writeValueAsString(root));
 
         setRoot(root);

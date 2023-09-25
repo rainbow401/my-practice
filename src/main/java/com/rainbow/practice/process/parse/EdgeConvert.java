@@ -20,12 +20,12 @@ public class EdgeConvert implements NodeConvert {
         Base base = convertBase(node);
         JsonNode sourceJson = node.get("source");
         if (sourceJson == null) {
-            throw new IllegalStateException("field 'source' is miss");
+            throw new IllegalStateException("field 'source' is missing");
         }
 
         JsonNode targetJson = node.get("target");
         if (targetJson == null) {
-            throw new IllegalStateException("field 'target' is miss");
+            throw new IllegalStateException("field 'target' is missing");
         }
 
         return new Edge(base, sourceJson.asText(), targetJson.asText());

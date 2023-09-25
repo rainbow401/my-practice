@@ -1,9 +1,6 @@
 package com.rainbow.practice.tree;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 树结构数据处理工具
@@ -19,7 +16,7 @@ public class TreeUtils {
     /**
      * 借助HashMap完成查询
      */
-    public static <T, R extends Node<T, R>> List<R> getTreeByMap(List<R> nodes) {
+    public static <T, R extends Node<T, R>> List<R> getTreeByMap(Collection<R> nodes) {
         List<R> resultList = new ArrayList<>();
         List<R> rootList = new ArrayList<>();
         HashMap<T, List<R>> childMap = new HashMap<>(48);
@@ -43,7 +40,7 @@ public class TreeUtils {
         return resultList;
     }
 
-    public static <T, R extends Node<T, R>> R getTreeRoot(List<R> nodes) {
+    public static <T, R extends Node<T, R>> R getTreeRoot(Collection<R> nodes) {
         List<R> nodeList = getTreeByMap(nodes);
 
         if (nodeList.size() != 1) {

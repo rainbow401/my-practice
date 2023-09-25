@@ -21,7 +21,7 @@ public class ActivityConvert implements NodeConvert {
         BaseWithPosition baseWithPosition = convertBaseWithPosition(node);
         JsonNode labelJson = node.get("label");
         if (labelJson == null) {
-            throw new IllegalStateException("field 'label' is miss");
+            throw new IllegalStateException("field 'label' is missing");
         }
 
         return new Activity(baseWithPosition, labelJson.asText());
