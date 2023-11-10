@@ -1,6 +1,7 @@
 package com.rainbow.practice.designpatterns.strategy;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class StrategyFactory {
 

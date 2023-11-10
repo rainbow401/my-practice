@@ -9,7 +9,6 @@ import java.util.List;
  * 通用数据载体
  * @author yanzhihao
  */
-@ToString
 public class CommonNode implements Node<Integer, CommonNode> {
 
     private Integer id;
@@ -56,5 +55,15 @@ public class CommonNode implements Node<Integer, CommonNode> {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public CommonNode(Integer id, Integer parentId, String data, List<CommonNode> child) {
+        this.id = id;
+        this.parentId = parentId;
+        this.data = data;
+        this.child = child;
+    }
+
+    public CommonNode() {
     }
 }

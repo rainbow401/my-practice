@@ -9,6 +9,7 @@ import com.rainbow.practice.process.define.validation.EdgeValidation;
 import com.rainbow.practice.process.define.validation.EventValidation;
 import com.rainbow.practice.process.define.validation.NodeTreeValidation;
 import com.rainbow.practice.process.define.validation.ProcessValidation;
+import com.rainbow.practice.tree.CommonNode;
 import com.rainbow.practice.tree.TreeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -115,12 +116,12 @@ public class ProcessDefineParser {
 
         for (Base e : edges) {
             Edge edge= (Edge) e;
-            String parentId = edge.getSource();
-            String childId = edge.getTarget();
+            String source = edge.getSource();
+            String target = edge.getTarget();
 
-            Base base = dataMap.get(childId);
+            Base base = dataMap.get(target);
             base.setConditions(edge.getConditions());
-            base.setParentId(parentId);
+            base.setParentId(source);
         }
 
         Base root = TreeUtils.getTreeRoot(dataMap.values());
@@ -136,5 +137,23 @@ public class ProcessDefineParser {
     public Base parseDefine(String jsonStr) throws JsonProcessingException {
         List<Base> bases = parseJson(jsonStr);
         return parseTree(bases);
+    }
+
+    public static void main(String[] args) {
+        CommonNode root = new CommonNode();
+        root.setId(1);
+        root.setParentId(null);
+
+        CommonNode node1 = new CommonNode();
+        node1.setId(2);
+
+        CommonNode node2 = new CommonNode();
+        node2.setId(3);
+
+        root.setChild(Collections.singletonList(node1));
+        node1.setChild(Collections.singletonList(node2));
+        node2.setChild(Collections.singletonList(node1));
+
+        System.out.println("root = " + 1);
     }
 }
