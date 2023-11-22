@@ -15,6 +15,15 @@ public class Result<T> implements Serializable {
 
     private T data;
 
+    public static <T> Result<T> success() {
+        Result<T> result = new Result<>();
+        result.success = true;
+        result.code = 0;
+        result.message = "OK";
+
+        return result;
+    }
+
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.success = true;
