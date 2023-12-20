@@ -17,7 +17,7 @@ public class KafkaListenerTest {
 
 
 
-    @KafkaListener(topics = "#{@kafkaConsumerService.getTopic()}", id = "kafkaConsumerService")
+//    @KafkaListener(topics = "#{@kafkaConsumerService.getTopic()}", id = "kafkaConsumerService")
     public void receiveMessage(String message) {
         // 处理接收到的消息逻辑
         System.out.println("Received message: " + message);
