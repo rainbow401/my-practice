@@ -51,7 +51,7 @@ public class TestReadWithErrorMessage {
 
         @Override
         public void doAfterAllAnalysed(AnalysisContext context) {
-            log.info("doAfterAllAnalysed cachedDataList: [{}]", cachedDataList.toString());
+            log.info("doAfterAllAnalysed cachedDataList: [{}] size[{}]", cachedDataList.toString(), cachedDataList.size());
         }
     }
 }

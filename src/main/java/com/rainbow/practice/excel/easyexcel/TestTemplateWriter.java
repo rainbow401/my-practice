@@ -55,7 +55,7 @@ public class TestTemplateWriter {
         List<User> list = new ArrayList<>();
         User user = new User();
         user.setId("1");
-        user.setName(2);
+        user.setName("2");
         list.add(user);
 
         return list;

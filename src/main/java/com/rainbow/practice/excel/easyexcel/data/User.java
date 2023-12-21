@@ -19,7 +19,7 @@ public class User {
     private String id;
 
     @ExcelProperty
-    private Integer name;
+    private String name;
 
 //    public User(String id, String name) {
 //        this.id = id;
