@@ -14,21 +14,18 @@ public interface Node<T, R extends Node<T, R>> {
      * 获取节点的id
      * @return 节点的id
      */
-    @JsonView(Node.View.class)
     T getId();
 
     /**
      * 获取父节点的id
      * @return 父节点id
      */
-    @JsonView(Node.View.class)
     T getParentId();
 
     /**
      * 获取子节点数据
      * @return 子节点数据
      */
-    @JsonView(Node.View.class)
     List<R> getChild();
 
     /**
@@ -36,6 +33,4 @@ public interface Node<T, R extends Node<T, R>> {
      * @param child 数据
      */
     void setChild(List<R> child);
-
-    public interface View {}
 }
