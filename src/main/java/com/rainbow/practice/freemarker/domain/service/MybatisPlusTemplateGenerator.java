@@ -1,6 +1,5 @@
 package com.rainbow.practice.freemarker.domain.service;
 
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
