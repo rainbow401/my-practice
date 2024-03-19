@@ -89,7 +89,7 @@ public class CityEntity implements Node<String, CityEntity> {
         this.parentCode = parentCode;
     }
 
-    public interface View extends Node.View{
+    public interface View extends Node{
 
     }
 }

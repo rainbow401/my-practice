@@ -19,7 +19,7 @@ public class TestDemo {
         String path = "C:\\project\\my-practice\\src\\main\\java\\com\\rainbow\\practice\\tree\\province\\dataList.json";
         List<CityEntity> list = JsonUtil.getListByFile(path, CityEntity.class);
         TreeUtils treeUtils = new TreeUtils();
-        List<CityEntity> treeByMap = treeUtils.getTreeByMap(list);
+        List<CityEntity> treeByMap = TreeUtils.getTreeByMap(list);
         System.out.println(list);
         System.out.println(treeByMap);
         path = "C:\\project\\my-practice\\src\\main\\java\\com\\rainbow\\practice\\tree\\province\\result.json";
